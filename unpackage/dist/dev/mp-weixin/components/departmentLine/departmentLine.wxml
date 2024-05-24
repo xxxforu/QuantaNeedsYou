@@ -1,0 +1,1 @@
+<view class="departmentLineBox" bindtap="{{b}}"><text>{{a}}</text><image src="/static/image/返回.png" mode=""></image></view>

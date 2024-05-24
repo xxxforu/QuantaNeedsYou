@@ -1,0 +1,22 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/index/index",
+    "pages/info/info",
+    "pages/tajiuzhaoni-HAIBAO/tajiuzhaoni-HAIBAO",
+    "pages/yiqianweiding/yiqianweiding",
+    "pages/yiqianweiding-detail/yiqianweiding-detail",
+    "pages/wodejianli/wodejianli",
+    "pages/xinjianjianli/xinjianjianli",
+    "pages/toudijianli-index/toudijianli-index",
+    "pages/tajiuzhaoni/tajiuzhaoni",
+    "pages/profileDetail/profileDetail"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F9E6DA",
+    "backgroundColor": "#F8F8F8"
+  },
+  "usingComponents": {}
+}

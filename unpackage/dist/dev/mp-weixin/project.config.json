@@ -1,0 +1,54 @@
+{
+    "description": "项目配置文件。",
+    "packOptions": {
+        "ignore": [],
+        "include": []
+    },
+    "setting": {
+        "urlCheck": false,
+        "es6": true,
+        "postcss": false,
+        "minified": true,
+        "newFeature": true,
+        "bigPackageSizeSupport": true,
+        "babelSetting": {
+            "ignore": [],
+            "disablePlugins": [],
+            "outputPath": ""
+        }
+    },
+    "compileType": "miniprogram",
+    "libVersion": "",
+    "appid": "wx87251c5ac91609b5",
+    "projectname": "enrollSystem",
+    "condition": {
+        "miniprogram": {
+            "list": [
+                {
+                    "name": "info",
+                    "pathName": "pages/info/info",
+                    "query": ""
+                },
+                {
+                    "name": "index",
+                    "pathName": "pages/index/index",
+                    "query": ""
+                },
+                {
+                    "name": "tajiuzhaoniHaiBAo",
+                    "pathName": "pages/tajiuzhaoni-HAIBAO/tajiuzhaoni-HAIBAO",
+                    "query": ""
+                },
+                {
+                    "name": "tajiuzhaoni",
+                    "pathName": "pages/tajiuzhaoni/tajiuzhaoni",
+                    "query": ""
+                }
+            ]
+        }
+    },
+    "editorSetting": {
+        "tabIndent": "insertSpaces",
+        "tabSize": 4
+    }
+}
