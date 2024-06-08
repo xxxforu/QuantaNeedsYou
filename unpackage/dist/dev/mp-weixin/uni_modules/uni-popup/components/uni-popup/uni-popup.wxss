@@ -33,6 +33,7 @@
 .uni-popup .uni-popup__wrapper {
   display: block;
   position: relative;
+  background-color: transparent !important;
   /* iphonex 等安全区设置，底部安全区适配 */
 }
 .uni-popup .uni-popup__wrapper.left, .uni-popup .uni-popup__wrapper.right {

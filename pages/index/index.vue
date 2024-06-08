@@ -71,6 +71,7 @@
 
 <script setup>
 	import { request } from '../../utils/request.js'
+	import { logout } from '@/api/login.js'
 	var topBarHeight = ref(0)
 	var haveEnterTajiuzhaoni = ref(false)
 	var MenuButtonHeight = ref(0)
@@ -111,18 +112,29 @@
 
 	function dialogConfirm() {
 		console.log(message.value)
-		request({ url: 'student/logout', method: 'POST' }).then(res => {
+		console.log(logout)
+		logout().then(res => {
 			console.log(res)
-			if (res.code == 200) {
-				uni.clearStorage()
-				message.value.open()
-				setTimeout(() => {
-					uni.navigateTo({ url: '/pages/login/login' })
-				}, 3000)
 
+			uni.clearStorage()
+			message.value.open()
+			setTimeout(() => {
+				uni.navigateTo({ url: '/pages/login/login' })
+			}, 1500)
 
-			}
 		})
+		// request({ url: 'student/logout', method: 'POST' }).then(res => {
+		// 	console.log(res)
+		// 	if (res.code == 200) {
+		// 		uni.clearStorage()
+		// 		message.value.open()
+		// 		setTimeout(() => {
+		// 			uni.navigateTo({ url: '/pages/login/login' })
+		// 		}, 1500)
+
+
+		// 	}
+		// })
 
 
 	}
@@ -130,10 +142,7 @@
 
 <style lang="scss">
 	.container {
-		box-sizing: border-box;
 		display: flex;
-		color: $text-color;
-		height: 100vh;
 	}
 
 	.tab {

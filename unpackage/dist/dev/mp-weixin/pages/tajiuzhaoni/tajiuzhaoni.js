@@ -5,13 +5,15 @@ if (!Array) {
   const _easycom_departmentLine2 = common_vendor.resolveComponent("departmentLine");
   const _easycom_profileLine2 = common_vendor.resolveComponent("profileLine");
   const _easycom_uni_popup2 = common_vendor.resolveComponent("uni-popup");
-  (_easycom_departmentLine2 + _easycom_profileLine2 + _easycom_uni_popup2)();
+  const _easycom_uni_popup_dialog2 = common_vendor.resolveComponent("uni-popup-dialog");
+  (_easycom_departmentLine2 + _easycom_profileLine2 + _easycom_uni_popup2 + _easycom_uni_popup_dialog2)();
 }
 const _easycom_departmentLine = () => "../../components/departmentLine/departmentLine.js";
 const _easycom_profileLine = () => "../../components/profileLine/profileLine.js";
 const _easycom_uni_popup = () => "../../uni_modules/uni-popup/components/uni-popup/uni-popup.js";
+const _easycom_uni_popup_dialog = () => "../../uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog.js";
 if (!Math) {
-  (_easycom_departmentLine + _easycom_profileLine + _easycom_uni_popup)();
+  (_easycom_departmentLine + _easycom_profileLine + _easycom_uni_popup + _easycom_uni_popup_dialog)();
 }
 const _sfc_main = {
   __name: "tajiuzhaoni",
@@ -67,6 +69,7 @@ const _sfc_main = {
         key: "haveEnterTajiuzhaoni",
         data: false
       });
+      getProfileList();
     });
     common_vendor.onReady(() => {
       var tabBarHeight = common_vendor.ref(0);
@@ -76,22 +79,37 @@ const _sfc_main = {
       }).exec();
     });
     var chooseDepartmentId = 0;
-    function deliverProfile(id) {
-      chooseDepartmentId = id;
+    function getProfileList() {
       utils_request.request({ url: "resume" }).then((res) => {
         if (res.code == 200) {
           profileList.value = res.data;
-          openProfile.value.open("center");
-        } else {
-          profileListEmpty.value.open("center");
         }
+        console.log(profileList.value);
       });
     }
-    var newProfileName = common_vendor.ref("名字");
-    function chooseProfile(id) {
-      console.log(id);
+    function deliverProfile(id) {
+      chooseDepartmentId = id;
+      if (profileList.value.length != 0) {
+        openProfile.value.open("center");
+      } else {
+        profileListEmpty.value.open("center");
+      }
+    }
+    common_vendor.ref("名字");
+    var inputDialog = common_vendor.ref(null);
+    function newProfileDecideName() {
+      inputDialog.value.open();
+    }
+    function dialogInputConfirm(val) {
       common_vendor.index.navigateTo({
-        url: "/pages/profileDetail/profileDetail?name=" + newProfileName.value + "&departmentId=" + chooseDepartmentId
+        url: "/pages/profileDetail/profileDetail?name=" + val + "&departmentId=" + chooseDepartmentId
+      });
+      inputDialog.value.close();
+    }
+    function chooseProfile(name, id) {
+      console.log(name);
+      common_vendor.index.navigateTo({
+        url: "/pages/profileDetail/profileDetail?name=" + name + "&departmentId=" + chooseDepartmentId + "&resumeId=" + id
       });
     }
     return (_ctx, _cache) => {
@@ -133,19 +151,35 @@ const _sfc_main = {
             e: item.resumeId
           };
         }),
-        l: common_vendor.unref(type) === "left" || common_vendor.unref(type) === "right" ? 1 : "",
-        m: common_vendor.sr(openProfile, "80f8bad8-1", {
+        l: common_vendor.o(newProfileDecideName),
+        m: common_vendor.unref(type) === "left" || common_vendor.unref(type) === "right" ? 1 : "",
+        n: common_vendor.sr(openProfile, "80f8bad8-1", {
           "k": "openProfile"
         }),
-        n: common_vendor.p({
+        o: common_vendor.p({
           ["background-color"]: "#fff"
         }),
-        o: common_vendor.unref(type) === "left" || common_vendor.unref(type) === "right" ? 1 : "",
-        p: common_vendor.sr(profileListEmpty, "80f8bad8-3", {
+        p: common_vendor.o(newProfileDecideName),
+        q: common_vendor.unref(type) === "left" || common_vendor.unref(type) === "right" ? 1 : "",
+        r: common_vendor.sr(profileListEmpty, "80f8bad8-3", {
           "k": "profileListEmpty"
         }),
-        q: common_vendor.p({
+        s: common_vendor.p({
           ["background-color"]: "#fff"
+        }),
+        t: common_vendor.sr("inputClose", "80f8bad8-5,80f8bad8-4"),
+        v: common_vendor.o(dialogInputConfirm),
+        w: common_vendor.p({
+          mode: "input",
+          title: "简历命名",
+          value: "",
+          placeholder: "请输入内容"
+        }),
+        x: common_vendor.sr(inputDialog, "80f8bad8-4", {
+          "k": "inputDialog"
+        }),
+        y: common_vendor.p({
+          type: "dialog"
         })
       });
     };

@@ -63,7 +63,13 @@
 
 		},
 		{
-			"path" : "pages/profileDetail/profileDetail",
+			"path": "pages/profileDetail/profileDetail",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path" : "api/login/login",
 			"style" : 
 			{
 				"navigationBarTitleText" : ""
@@ -75,7 +81,10 @@
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F9E6DA",
-		"backgroundColor": "#F8F8F8"
+		"backgroundColor": "#F8F8F8",
+		"usingComponents": {
+			"van-toast": "/wxcomponents/vant/toast/index"
+		}
 	},
 	"uniIdRouter": {},
 	"condition": { //模式配置，仅开发期间生效
@@ -93,6 +102,9 @@
 		}, {
 			"name": "tajiuzhaoni",
 			"path": "pages/tajiuzhaoni/tajiuzhaoni"
+		}, {
+			"name": "profileDetail",
+			"path": "pages/profileDetail/profileDetail"
 		}]
 	}
 }

@@ -25,4 +25,18 @@
 </script>
 <style>
 	/*每个页面公共css */
+	.myButton {
+		background-color: #ffa265;
+		color: #fff;
+		font-size: 13px;
+		font-weight: bold;
+		border-radius: 10px;
+	}
+
+	.container {
+		box-sizing: border-box;
+		color: #707070;
+		height: 100vh;
+		background-color: #f9f8f8;
+	}
 </style>

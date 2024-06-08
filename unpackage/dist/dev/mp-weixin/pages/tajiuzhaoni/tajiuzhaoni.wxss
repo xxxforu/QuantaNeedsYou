@@ -26,7 +26,6 @@
 .container.data-v-80f8bad8 {
   height: 100vh;
   overflow-y: hidden;
-  color: #707070;
 }
 .tabBar.data-v-80f8bad8 {
   width: 100vw;
@@ -77,7 +76,8 @@
 #title.data-v-80f8bad8 {
   font-weight: bold;
 }
-#newProfile.data-v-80f8bad8 {
+.newProfile.data-v-80f8bad8 {
+  color: #ffa265;
   position: absolute;
   right: 10%;
   top: 20px;

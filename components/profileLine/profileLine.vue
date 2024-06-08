@@ -15,7 +15,7 @@
 		},
 		methods: {
 			chooseProfile() {
-				this.$emit('chooseProfile', this.id)
+				this.$emit('chooseProfile', this.name, this.id)
 			}
 		}
 	}

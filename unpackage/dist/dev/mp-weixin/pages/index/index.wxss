@@ -24,10 +24,7 @@
 /* 透明度 */
 /* 文章场景相关 */
 .container {
-  box-sizing: border-box;
   display: flex;
-  color: #707070;
-  height: 100vh;
 }
 .tab {
   position: relative;

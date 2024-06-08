@@ -2,9 +2,7 @@
 const uni_modules_uniPopup_components_uniPopup_popup = require("../uni-popup/popup.js");
 const common_vendor = require("../../../../common/vendor.js");
 const uni_modules_uniPopup_components_uniPopup_i18n_index = require("../uni-popup/i18n/index.js");
-const {
-  t
-} = common_vendor.initVueI18n(uni_modules_uniPopup_components_uniPopup_i18n_index.messages);
+const { t } = common_vendor.initVueI18n(uni_modules_uniPopup_components_uniPopup_i18n_index.messages);
 const _sfc_main = {
   name: "uniPopupDialog",
   mixins: [uni_modules_uniPopup_components_uniPopup_popup.popup],

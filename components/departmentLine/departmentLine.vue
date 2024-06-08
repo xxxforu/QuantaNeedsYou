@@ -32,7 +32,7 @@
 		align-items: center;
 		width: 85vw;
 		height: 50px;
-		margin: 20px auto;
+		margin: 0 auto 20px;
 		padding: 20px;
 		box-sizing: border-box;
 		box-shadow: 0 3px 8px 0 rgba(50, 49, 49, 0.06);

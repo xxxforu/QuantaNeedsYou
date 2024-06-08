@@ -43,6 +43,11 @@
                     "name": "tajiuzhaoni",
                     "pathName": "pages/tajiuzhaoni/tajiuzhaoni",
                     "query": ""
+                },
+                {
+                    "name": "profileDetail",
+                    "pathName": "pages/profileDetail/profileDetail",
+                    "query": ""
                 }
             ]
         }

@@ -101,23 +101,23 @@
 	 * @example <uni-easyinput v-model="mobile"></uni-easyinput>
 	 */
 	function obj2strClass(obj) {
-		let classess = '';
+		let classess = ''
 		for (let key in obj) {
-			const val = obj[key];
+			const val = obj[key]
 			if (val) {
-				classess += `${key} `;
+				classess += `${key} `
 			}
 		}
-		return classess;
+		return classess
 	}
 
 	function obj2strStyle(obj) {
-		let style = '';
+		let style = ''
 		for (let key in obj) {
-			const val = obj[key];
-			style += `${key}:${val};`;
+			const val = obj[key]
+			style += `${key}:${val};`
 		}
-		return style;
+		return style
 	}
 	export default {
 		name: 'uni-easyinput',
@@ -231,13 +231,13 @@
 			},
 			styles: {
 				type: Object,
-				default() {
+				default () {
 					return {
 						color: '#333',
 						backgroundColor: '#fff',
 						disableColor: '#F7F6F6',
 						borderColor: '#e5e5e5'
-					};
+					}
 				}
 			},
 			errorMessage: {
@@ -263,17 +263,17 @@
 				focusShow: false,
 				localMsg: '',
 				isEnter: false // 用于判断当前是否是使用回车操作
-			};
+			}
 		},
 		computed: {
 			// 输入框内是否有值
 			isVal() {
-				const val = this.val;
+				const val = this.val
 				// fixed by mehaotian 处理值为0的情况，字符串0不在处理范围
 				if (val || val === 0) {
-					return true;
+					return true
 				}
-				return false;
+				return false
 			},
 
 			msg() {
@@ -282,18 +282,18 @@
 				// 	return this.errorMessage || this.formItem.errMsg;
 				// }
 				// TODO 处理头条 formItem 中 errMsg 不更新的问题
-				return this.localMsg || this.errorMessage;
+				return this.localMsg || this.errorMessage
 			},
 			// 因为uniapp的input组件的maxlength组件必须要数值，这里转为数值，用户可以传入字符串数值
 			inputMaxlength() {
-				return Number(this.maxlength);
+				return Number(this.maxlength)
 			},
 
 			// 处理外层样式的style
 			boxStyle() {
 				return `color:${
 					this.inputBorder && this.msg ? '#e43d33' : this.styles.color
-				};`;
+				};`
 			},
 			// input 内容的类和样式处理
 			inputContentClass() {
@@ -303,61 +303,60 @@
 					'is-textarea': this.type === 'textarea',
 					'is-disabled': this.disabled,
 					'is-focused': this.focusShow
-				});
+				})
 			},
 			inputContentStyle() {
-				const focusColor = this.focusShow
-					? this.primaryColor
-					: this.styles.borderColor;
+				const focusColor = this.focusShow ?
+					this.primaryColor :
+					this.styles.borderColor
 				const borderColor =
-					this.inputBorder && this.msg ? '#dd524d' : focusColor;
+					this.inputBorder && this.msg ? '#dd524d' : focusColor
 				return obj2strStyle({
 					'border-color': borderColor || '#e5e5e5',
-					'background-color': this.disabled
-						? this.styles.disableColor
-						: this.styles.backgroundColor
-				});
+					'background-color': this.disabled ?
+						this.styles.disableColor : this.styles.backgroundColor
+				})
 			},
 			// input右侧样式
 			inputStyle() {
 				const paddingRight =
-					this.type === 'password' || this.clearable || this.prefixIcon
-						? ''
-						: '10px';
+					this.type === 'password' || this.clearable || this.prefixIcon ?
+					'' :
+					'10px'
 				return obj2strStyle({
 					'padding-right': paddingRight,
 					'padding-left': this.prefixIcon ? '' : '10px'
-				});
+				})
 			}
 		},
 		watch: {
 			value(newVal) {
-				this.val = newVal;
+				this.val = newVal
 			},
 			modelValue(newVal) {
-				this.val = newVal;
+				this.val = newVal
 			},
 			focus(newVal) {
 				this.$nextTick(() => {
-					this.focused = this.focus;
-					this.focusShow = this.focus;
-				});
+					this.focused = this.focus
+					this.focusShow = this.focus
+				})
 			}
 		},
 		created() {
-			this.init();
+			this.init()
 			// TODO 处理头条vue3 computed 不监听 inject 更改的问题（formItem.errMsg）
 			if (this.form && this.formItem) {
 				this.$watch('formItem.errMsg', newVal => {
-					this.localMsg = newVal;
-				});
+					this.localMsg = newVal
+				})
 			}
 		},
 		mounted() {
 			this.$nextTick(() => {
-				this.focused = this.focus;
-				this.focusShow = this.focus;
-			});
+				this.focused = this.focus
+				this.focusShow = this.focus
+			})
 		},
 		methods: {
 			/**
@@ -365,15 +364,15 @@
 			 */
 			init() {
 				if (this.value || this.value === 0) {
-					this.val = this.value;
+					this.val = this.value
 				} else if (
 					this.modelValue ||
 					this.modelValue === 0 ||
 					this.modelValue === ''
 				) {
-					this.val = this.modelValue;
+					this.val = this.modelValue
 				} else {
-					this.val = null;
+					this.val = null
 				}
 			},
 
@@ -382,15 +381,15 @@
 			 * @param {Object} type
 			 */
 			onClickIcon(type) {
-				this.$emit('iconClick', type);
+				this.$emit('iconClick', type)
 			},
 
 			/**
 			 * 显示隐藏内容，密码框时生效
 			 */
 			onEyes() {
-				this.showPassword = !this.showPassword;
-				this.$emit('eyes', this.showPassword);
+				this.showPassword = !this.showPassword
+				this.$emit('eyes', this.showPassword)
 			},
 
 			/**
@@ -398,22 +397,22 @@
 			 * @param {Object} event
 			 */
 			onInput(event) {
-				let value = event.detail.value;
+				let value = event.detail.value
 				// 判断是否去除空格
 				if (this.trim) {
 					if (typeof this.trim === 'boolean' && this.trim) {
-						value = this.trimStr(value);
+						value = this.trimStr(value)
 					}
 					if (typeof this.trim === 'string') {
-						value = this.trimStr(value, this.trim);
+						value = this.trimStr(value, this.trim)
 					}
 				}
-				if (this.errMsg) this.errMsg = '';
-				this.val = value;
+				if (this.errMsg) this.errMsg = ''
+				this.val = value
 				// TODO 兼容 vue2
-				this.$emit('input', value);
+				this.$emit('input', value)
 				// TODO　兼容　vue3
-				this.$emit('update:modelValue', value);
+				this.$emit('update:modelValue', value)
 			},
 
 			/**
@@ -423,14 +422,14 @@
 			 */
 			onFocus() {
 				this.$nextTick(() => {
-					this.focused = true;
-				});
-				this.$emit('focus', null);
+					this.focused = true
+				})
+				this.$emit('focus', null)
 			},
 
 			_Focus(event) {
-				this.focusShow = true;
-				this.$emit('focus', event);
+				this.focusShow = true
+				this.$emit('focus', event)
 			},
 
 			/**
@@ -439,22 +438,22 @@
 			 * @param {Object} event
 			 */
 			onBlur() {
-				this.focused = false;
-				this.$emit('blur', null);
+				this.focused = false
+				this.$emit('blur', null)
 			},
 			_Blur(event) {
-				let value = event.detail.value;
-				this.focusShow = false;
-				this.$emit('blur', event);
+				let value = event.detail.value
+				this.focusShow = false
+				this.$emit('blur', event)
 				// 根据类型返回值，在event中获取的值理论上讲都是string
 				if (this.isEnter === false) {
-					this.$emit('change', this.val);
+					this.$emit('change', this.val)
 				}
 				// 失去焦点时参与表单校验
 				if (this.form && this.formItem) {
-					const { validateTrigger } = this.form;
+					const { validateTrigger } = this.form
 					if (validateTrigger === 'blur') {
-						this.formItem.onFieldChange();
+						this.formItem.onFieldChange()
 					}
 				}
 			},
@@ -464,12 +463,12 @@
 			 * @param {Object} e
 			 */
 			onConfirm(e) {
-				this.$emit('confirm', this.val);
-				this.isEnter = true;
-				this.$emit('change', this.val);
+				this.$emit('confirm', this.val)
+				this.isEnter = true
+				this.$emit('change', this.val)
 				this.$nextTick(() => {
-					this.isEnter = false;
-				});
+					this.isEnter = false
+				})
 			},
 
 			/**
@@ -477,14 +476,14 @@
 			 * @param {Object} event
 			 */
 			onClear(event) {
-				this.val = '';
+				this.val = ''
 				// TODO 兼容 vue2
-				this.$emit('input', '');
+				this.$emit('input', '')
 				// TODO 兼容 vue2
 				// TODO　兼容　vue3
-				this.$emit('update:modelValue', '');
+				this.$emit('update:modelValue', '')
 				// 点击叉号触发
-				this.$emit('clear');
+				this.$emit('clear')
 			},
 
 			/**
@@ -493,7 +492,7 @@
 			 * @param {Object} event
 			 */
 			onkeyboardheightchange(event) {
-				this.$emit('keyboardheightchange', event);
+				this.$emit('keyboardheightchange', event)
 			},
 
 			/**
@@ -501,24 +500,24 @@
 			 */
 			trimStr(str, pos = 'both') {
 				if (pos === 'both') {
-					return str.trim();
+					return str.trim()
 				} else if (pos === 'left') {
-					return str.trimLeft();
+					return str.trimLeft()
 				} else if (pos === 'right') {
-					return str.trimRight();
+					return str.trimRight()
 				} else if (pos === 'start') {
-					return str.trimStart();
+					return str.trimStart()
 				} else if (pos === 'end') {
-					return str.trimEnd();
+					return str.trimEnd()
 				} else if (pos === 'all') {
-					return str.replace(/\s+/g, '');
+					return str.replace(/\s+/g, '')
 				} else if (pos === 'none') {
-					return str;
+					return str
 				}
-				return str;
+				return str
 			}
 		}
-	};
+	}
 </script>
 
 <style lang="scss">
@@ -526,6 +525,8 @@
 	$uni-border-1: #dcdfe6 !default;
 
 	.uni-easyinput {
+		border: 1px #FFA265 solid;
+		border-radius: 3px;
 		/* #ifndef APP-NVUE */
 		width: 100%;
 		/* #endif */
@@ -533,7 +534,7 @@
 		position: relative;
 		text-align: left;
 		color: #333;
-		font-size: 14px;
+		font-size: 13px;
 	}
 
 	.uni-easyinput__content {
@@ -576,6 +577,7 @@
 		& ::-o-clear {
 			display: none;
 		}
+
 		/*endif*/
 	}
 

@@ -10,7 +10,7 @@ const _sfc_main = {
   },
   methods: {
     chooseProfile() {
-      this.$emit("chooseProfile", this.id);
+      this.$emit("chooseProfile", this.name, this.id);
     }
   }
 };

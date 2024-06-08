@@ -1,6 +1,6 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
-const utils_request = require("../../utils/request.js");
+const api_login = require("../../api/login.js");
 if (!Array) {
   const _easycom_uni_popup_message2 = common_vendor.resolveComponent("uni-popup-message");
   const _easycom_uni_popup2 = common_vendor.resolveComponent("uni-popup");
@@ -48,15 +48,14 @@ const _sfc_main = {
     }
     function dialogConfirm() {
       console.log(message.value);
-      utils_request.request({ url: "student/logout", method: "POST" }).then((res) => {
+      console.log(api_login.logout);
+      api_login.logout().then((res) => {
         console.log(res);
-        if (res.code == 200) {
-          common_vendor.index.clearStorage();
-          message.value.open();
-          setTimeout(() => {
-            common_vendor.index.navigateTo({ url: "/pages/login/login" });
-          }, 3e3);
-        }
+        common_vendor.index.clearStorage();
+        message.value.open();
+        setTimeout(() => {
+          common_vendor.index.navigateTo({ url: "/pages/login/login" });
+        }, 1500);
       });
     }
     return (_ctx, _cache) => {

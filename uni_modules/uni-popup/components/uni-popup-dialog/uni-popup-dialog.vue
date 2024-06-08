@@ -28,13 +28,9 @@
 
 <script>
 	import popup from '../uni-popup/popup.js'
-	import {
-		initVueI18n
-	} from '@dcloudio/uni-i18n'
+	import { initVueI18n } from '@dcloudio/uni-i18n'
 	import messages from '../uni-popup/i18n/index.js'
-	const {
-		t
-	} = initVueI18n(messages)
+	const { t } = initVueI18n(messages)
 	/**
 	 * PopUp 弹出层-对话框样式
 	 * @description 弹出层-对话框样式
@@ -59,7 +55,7 @@
 	 */
 
 	export default {
-		name: "uniPopupDialog",
+		name: 'uniPopupDialog',
 		mixins: [popup],
 		emits: ['confirm', 'close', 'update:modelValue', 'input'],
 		props: {
@@ -129,21 +125,21 @@
 		data() {
 			return {
 				dialogType: 'error',
-				val: ""
+				val: ''
 			}
 		},
 		computed: {
 			okText() {
-				return this.confirmText || t("uni-popup.ok")
+				return this.confirmText || t('uni-popup.ok')
 			},
 			closeText() {
-				return this.cancelText || t("uni-popup.cancel")
+				return this.cancelText || t('uni-popup.cancel')
 			},
 			placeholderText() {
-				return this.placeholder || t("uni-popup.placeholder")
+				return this.placeholder || t('uni-popup.placeholder')
 			},
 			titleText() {
-				return this.title || t("uni-popup.title")
+				return this.title || t('uni-popup.title')
 			}
 		},
 		watch: {
@@ -157,7 +153,7 @@
 			},
 			value(val) {
 				if (this.maxlength != -1 && this.mode === 'input') {
-					this.val = val.slice(0, this.maxlength);
+					this.val = val.slice(0, this.maxlength)
 				} else {
 					this.val = val
 				}
@@ -165,11 +161,11 @@
 			val(val) {
 				// #ifdef VUE2
 				// TODO 兼容 vue2
-				this.$emit('input', val);
+				this.$emit('input', val)
 				// #endif
 				// #ifdef VUE3
 				// TODO　兼容　vue3
-				this.$emit('update:modelValue', val);
+				this.$emit('update:modelValue', val)
 				// #endif
 			}
 		},
@@ -179,9 +175,9 @@
 			// this.popup.closeMask()
 			if (this.mode === 'input') {
 				this.dialogType = 'info'
-				this.val = this.value;
+				this.val = this.value
 				// #ifdef VUE3
-				this.val = this.modelValue;
+				this.val = this.modelValue
 				// #endif
 			} else {
 				this.dialogType = this.type
@@ -218,13 +214,17 @@
 <style lang="scss">
 	.uni-popup-dialog {
 		width: 300px;
-		border-radius: 11px;
 		background-color: #fff;
+		border-radius: 10px;
+		border: 1px $button-color solid;
+		box-shadow: 0 3px 8px 0 rgba(50, 49, 49, 0.06);
 	}
 
 	.uni-dialog-title {
 		/* #ifndef APP-NVUE */
 		display: flex;
+		color: #707070;
+		font-weight: bold;
 		/* #endif */
 		flex-direction: row;
 		justify-content: center;
@@ -233,11 +233,13 @@
 
 	.uni-dialog-title-text {
 		font-size: 16px;
-		font-weight: 500;
+		font-weight: bold;
+		color: #707070;
 	}
 
 	.uni-dialog-content {
 		/* #ifndef APP-NVUE */
+		color: #707070;
 		display: flex;
 		/* #endif */
 		flex-direction: row;
@@ -285,7 +287,7 @@
 	}
 
 	.uni-button-color {
-		color: #007aff;
+		color: #FFA265;
 	}
 
 	.uni-dialog-input {
@@ -311,6 +313,6 @@
 	}
 
 	.uni-popup__info {
-		color: #909399;
+		color: #707070;
 	}
 </style>

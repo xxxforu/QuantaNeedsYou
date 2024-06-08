@@ -10,13 +10,16 @@
     "pages/xinjianjianli/xinjianjianli",
     "pages/toudijianli-index/toudijianli-index",
     "pages/tajiuzhaoni/tajiuzhaoni",
-    "pages/profileDetail/profileDetail"
+    "pages/profileDetail/profileDetail",
+    "api/login/login"
   ],
+  "usingComponents": {
+    "van-toast": "/wxcomponents/vant/toast/index"
+  },
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",
     "navigationBarBackgroundColor": "#F9E6DA",
     "backgroundColor": "#F8F8F8"
-  },
-  "usingComponents": {}
+  }
 }

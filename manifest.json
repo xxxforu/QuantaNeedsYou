@@ -65,6 +65,7 @@
 			"minified": true
 		},
 		"usingComponents": true
+
 	},
 	"mp-alipay": {
 		"usingComponents": true

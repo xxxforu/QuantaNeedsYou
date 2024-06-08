@@ -60,6 +60,7 @@
 			key: 'haveEnterTajiuzhaoni',
 			data: false
 		})
+		getProfileList()
 	})
 	onReady(() => {
 		//.box获取class为box的元素，如果使用的id= 'box' 则使用'#box'
@@ -74,26 +75,46 @@
 	// 选择简历
 	var chooseDepartmentId = 0
 
-	function deliverProfile(id) {
-		chooseDepartmentId = id
+	function getProfileList() {
 		request({ url: 'resume' }).then(res => {
 			if (res.code == 200) {
 				profileList.value = res.data
-				openProfile.value.open('center')
-			} else {
-				profileListEmpty.value.open('center')
 			}
+			console.log(profileList.value)
 		})
 	}
-	var newProfileName = ref('名字')
 
-	function chooseProfile(id) {
-		// 跳转简历详情页
-		console.log(id)
+	function deliverProfile(id) {
+		chooseDepartmentId = id
+		if (profileList.value.length != 0) {
+			openProfile.value.open('center')
+		} else {
+			profileListEmpty.value.open('center')
+		}
+	}
+	var newProfileName = ref('名字')
+	var inputDialog = ref(null)
+
+	function newProfileDecideName() {
+		inputDialog.value.open()
+	}
+
+	function dialogInputConfirm(val) {
+
 		uni.navigateTo({
- url: '/pages/profileDetail/profileDetail?name=' + newProfileName.value + '&departmentId=' +
-				chooseDepartmentId 
-})
+			url: '/pages/profileDetail/profileDetail?name=' + val + '&departmentId=' +
+				chooseDepartmentId
+		})
+		inputDialog.value.close()
+	}
+
+	function chooseProfile(name, id) {
+		// 跳转简历详情页
+		console.log(name)
+		uni.navigateTo({
+			url: '/pages/profileDetail/profileDetail?name=' + name + '&departmentId=' +
+				chooseDepartmentId + '&resumeId=' + id
+		})
 	}
 </script>
 
@@ -106,7 +127,7 @@
 		<view class="content">
 			<view v-show="isNotDeliver" class="tabcontent notDeliver">
 				<text v-if="!departmentEmpty" class="empty">本年投递已结束~明年再来吧~</text>
-				<view v-if="departmentEmpty" class="departmentList">
+				<view v-if="departmentEmpty" class="departmentList" style="padding-top: 20px;">
 					<view v-for="item in departmentList" :key="item.departmentId">
 						<departmentLine :title="item.name" :id="item.departmentId" @deliverProfile="deliverProfile">
 						</departmentLine>
@@ -129,25 +150,32 @@
 				<profileLine :name="item.resumeName" :id="item.resumeId" @chooseProfile="chooseProfile">
 				</profileLine>
 			</view>
-			<text id="newProfile">新建</text>
+			<text class="newProfile" @click="newProfileDecideName">新建</text>
 		</view>
 	</uni-popup>
+
 	<!-- 暂无简历弹窗profileListEmpty -->
 	<uni-popup ref="profileListEmpty" background-color="#fff">
 		<view class="popup-content" :class="{ 'popup-height': type === 'left' || type === 'right' }">
-
 			<text id="title">选择简历</text>
-
-			<text id="newProfile">新建</text>
+			<image src="../../static/image/草稿箱.png" style="width: 58px; margin: 10px 0;" mode="widthFix"></image>
+			<text style="font-size: 15px; margin: 10px 0;">这里空空如也~</text>
+			<button class="myButton" @click="newProfileDecideName">去新建</button>
 		</view>
 	</uni-popup>
+
+	<!-- 新建简历命名框 -->
+	<uni-popup ref="inputDialog" type="dialog">
+		<uni-popup-dialog ref="inputClose" mode="input" title="简历命名" value="" placeholder="请输入内容"
+			@confirm="dialogInputConfirm"></uni-popup-dialog>
+	</uni-popup>
 </template>
+
 
 <style lang="scss" scoped>
 	.container {
 		height: 100vh;
 		overflow-y: hidden;
-		color: $text-color;
 	}
 
 	.tabBar {
@@ -208,7 +236,8 @@
 		font-weight: bold;
 	}
 
-	#newProfile {
+	.newProfile {
+		color: $button-color;
 		position: absolute;
 		right: 10%;
 		top: 20px;

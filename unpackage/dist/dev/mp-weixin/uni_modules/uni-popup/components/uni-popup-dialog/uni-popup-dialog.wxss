@@ -25,20 +25,26 @@
 /* 文章场景相关 */
 .uni-popup-dialog {
   width: 300px;
-  border-radius: 11px;
   background-color: #fff;
+  border-radius: 10px;
+  border: 1px #ffa265 solid;
+  box-shadow: 0 3px 8px 0 rgba(50, 49, 49, 0.06);
 }
 .uni-dialog-title {
   display: flex;
+  color: #707070;
+  font-weight: bold;
   flex-direction: row;
   justify-content: center;
   padding-top: 25px;
 }
 .uni-dialog-title-text {
   font-size: 16px;
-  font-weight: 500;
+  font-weight: bold;
+  color: #707070;
 }
 .uni-dialog-content {
+  color: #707070;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -74,7 +80,7 @@
   color: #333;
 }
 .uni-button-color {
-  color: #007aff;
+  color: #FFA265;
 }
 .uni-dialog-input {
   flex: 1;
@@ -95,5 +101,5 @@
   color: #dd524d;
 }
 .uni-popup__info {
-  color: #909399;
+  color: #707070;
 }
