@@ -1,15 +1,16 @@
 {
-  "name": "enrollsystem",
-  "version": "1.0.0",
-  "description": "",
-  "main": "main.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@vant/weapp": "^1.11.6"
-  }
+	"name": "enrollsystem",
+	"version": "1.0.0",
+	"description": "",
+	"main": "main.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"chromium-args": "--args --explicitly-allowed-ports=101,102,103,6666",
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@vant/weapp": "^1.11.6"
+	}
 }

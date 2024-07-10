@@ -102,14 +102,14 @@ const _sfc_main = {
     }
     function dialogInputConfirm(val) {
       common_vendor.index.navigateTo({
-        url: "/pages/profileDetail/profileDetail?name=" + val + "&departmentId=" + chooseDepartmentId
+        url: "/pages/profileDetail/profileDetail?name=" + val + "&departmentId=" + chooseDepartmentId + "&from=1"
       });
       inputDialog.value.close();
     }
     function chooseProfile(name, id) {
       console.log(name);
       common_vendor.index.navigateTo({
-        url: "/pages/profileDetail/profileDetail?name=" + name + "&departmentId=" + chooseDepartmentId + "&resumeId=" + id
+        url: "/pages/profileDetail/profileDetail?name=" + name + "&departmentId=" + chooseDepartmentId + "&resumeId=" + id + "&from=1"
       });
     }
     return (_ctx, _cache) => {

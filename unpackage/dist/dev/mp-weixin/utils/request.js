@@ -1,6 +1,6 @@
 "use strict";
 const common_vendor = require("../common/vendor.js");
-const baseUrl = "http://119.188.247.32:55588/quanta/recruitment_reception/";
+const baseUrl = "http://47.120.73.35:8088/quanta/recruitment_reception/";
 const request = (options) => {
   return new Promise((resolve, reject) => {
     const header = {

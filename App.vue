@@ -31,6 +31,7 @@
 		font-size: 13px;
 		font-weight: bold;
 		border-radius: 10px;
+		padding: 3px 35px;
 	}
 
 	.container {

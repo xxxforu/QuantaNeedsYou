@@ -95,7 +95,7 @@
 			modelValue: {
 				type: [Array, String, Number],
 				default () {
-					return '';
+					return ''
 				}
 			},
 			localdata: {
@@ -167,7 +167,7 @@
 				// }
 			},
 			modelValue(newVal) {
-				this.dataList = this.getDataList(newVal);
+				this.dataList = this.getDataList(newVal)
 				// if(!this.is_reset){
 				// 	this.is_reset = false
 				// 	this.formItem && this.formItem.setValue(newVal)
@@ -185,11 +185,11 @@
 				},
 				isLocal: true,
 				styles: {
-					selectedColor: '#2979ff',
+					selectedColor: '#ffa265',
 					selectedTextColor: '#666',
 				},
 				isTop: 0
-			};
+			}
 		},
 		computed: {
 			dataValue() {
@@ -245,14 +245,14 @@
 			 * 获取父元素实例
 			 */
 			getForm(name = 'uniForms') {
-				let parent = this.$parent;
-				let parentName = parent.$options.name;
+				let parent = this.$parent
+				let parentName = parent.$options.name
 				while (parentName !== name) {
-					parent = parent.$parent;
+					parent = parent.$parent
 					if (!parent) return false
-					parentName = parent.$options.name;
+					parentName = parent.$options.name
 				}
-				return parent;
+				return parent
 			},
 			change(e) {
 				const values = e.detail.value
@@ -281,12 +281,10 @@
 				}
 				// this.formItem && this.formItem.setValue(detail.value)
 				// TODO 兼容 vue2
-				this.$emit('input', detail.value);
+				this.$emit('input', detail.value)
 				// // TOTO 兼容 vue3
-				this.$emit('update:modelValue', detail.value);
-				this.$emit('change', {
-					detail
-				})
+				this.$emit('update:modelValue', detail.value)
+				this.$emit('change', { detail })
 				if (this.multiple) {
 					// 如果 v-model 没有绑定 ，则走内部逻辑
 					// if (this.value.length === 0) {
@@ -376,7 +374,7 @@
 			getSelectedValue(range) {
 				if (!this.multiple) return this.dataValue
 				let selectedArr = []
-				range.forEach((item) => {
+				range.forEach(item => {
 					if (item.selected) {
 						selectedArr.push(item[this.map.value])
 					}
@@ -389,7 +387,7 @@
 			 */
 			setStyleBackgroud(item) {
 				let styles = {}
-				let selectedColor = this.selectedColor ? this.selectedColor : '#2979ff'
+				let selectedColor = this.selectedColor ? this.selectedColor : '#ffa265'
 				if (this.selectedColor) {
 					if (this.mode !== 'list') {
 						styles['border-color'] = item.selected ? selectedColor : '#DCDFE6'
@@ -408,7 +406,7 @@
 				let styles = {}
 				let classles = ''
 				if (this.selectedColor) {
-					let selectedColor = this.selectedColor ? this.selectedColor : '#2979ff'
+					let selectedColor = this.selectedColor ? this.selectedColor : '#ffa265'
 					styles['background-color'] = item.selected ? selectedColor : '#fff'
 					styles['border-color'] = item.selected ? selectedColor : '#DCDFE6'
 
@@ -426,7 +424,7 @@
 				let styles = {}
 				let classles = ''
 				if (this.selectedColor) {
-					let selectedColor = this.selectedColor ? this.selectedColor : '#2979ff'
+					let selectedColor = this.selectedColor ? this.selectedColor : '#ffa265'
 					if (this.mode === 'tag') {
 						styles.color = item.selected ? (this.selectedTextColor ? this.selectedTextColor : '#fff') : '#666'
 					} else {
@@ -458,7 +456,7 @@
 </script>
 
 <style lang="scss">
-	$uni-primary: #2979ff !default;
+	$uni-primary: #ffa265 !default;
 	$border-color: #DCDFE6;
 	$disable: 0.4;
 
@@ -814,6 +812,7 @@
 
 						.radio__inner {
 							border-color: $uni-primary;
+
 							.radio__inner-icon {
 								opacity: 1;
 								background-color: $uni-primary;

@@ -104,7 +104,7 @@ const _sfc_main = {
       },
       isLocal: true,
       styles: {
-        selectedColor: "#2979ff",
+        selectedColor: "#ffa265",
         selectedTextColor: "#666"
       },
       isTop: 0
@@ -183,9 +183,7 @@ const _sfc_main = {
       }
       this.$emit("input", detail.value);
       this.$emit("update:modelValue", detail.value);
-      this.$emit("change", {
-        detail
-      });
+      this.$emit("change", { detail });
       if (this.multiple) {
         this.dataList = this.getDataList(detail.value, true);
       } else {
@@ -279,7 +277,7 @@ const _sfc_main = {
      */
     setStyleBackgroud(item) {
       let styles = {};
-      let selectedColor = this.selectedColor ? this.selectedColor : "#2979ff";
+      let selectedColor = this.selectedColor ? this.selectedColor : "#ffa265";
       if (this.selectedColor) {
         if (this.mode !== "list") {
           styles["border-color"] = item.selected ? selectedColor : "#DCDFE6";
@@ -298,7 +296,7 @@ const _sfc_main = {
       let styles = {};
       let classles = "";
       if (this.selectedColor) {
-        let selectedColor = this.selectedColor ? this.selectedColor : "#2979ff";
+        let selectedColor = this.selectedColor ? this.selectedColor : "#ffa265";
         styles["background-color"] = item.selected ? selectedColor : "#fff";
         styles["border-color"] = item.selected ? selectedColor : "#DCDFE6";
         if (!item.selected && item.disabled) {
@@ -315,7 +313,7 @@ const _sfc_main = {
       let styles = {};
       let classles = "";
       if (this.selectedColor) {
-        let selectedColor = this.selectedColor ? this.selectedColor : "#2979ff";
+        let selectedColor = this.selectedColor ? this.selectedColor : "#ffa265";
         if (this.mode === "tag") {
           styles.color = item.selected ? this.selectedTextColor ? this.selectedTextColor : "#fff" : "#666";
         } else {

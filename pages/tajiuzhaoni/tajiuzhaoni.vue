@@ -100,10 +100,9 @@
 	}
 
 	function dialogInputConfirm(val) {
-
 		uni.navigateTo({
 			url: '/pages/profileDetail/profileDetail?name=' + val + '&departmentId=' +
-				chooseDepartmentId
+				chooseDepartmentId + '&from=1'
 		})
 		inputDialog.value.close()
 	}
@@ -113,7 +112,7 @@
 		console.log(name)
 		uni.navigateTo({
 			url: '/pages/profileDetail/profileDetail?name=' + name + '&departmentId=' +
-				chooseDepartmentId + '&resumeId=' + id
+				chooseDepartmentId + '&resumeId=' + id + '&from=1'
 		})
 	}
 </script>
