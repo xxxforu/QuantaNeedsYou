@@ -1,9 +1,16 @@
 <template>
 	<view class="container">
 		<view class="tab" :style="{paddingTop: topBarHeight + 'px'}">
-			<view id="avatarUrl" :style="{backgroundImage: 'url(' + avatarUrl + ')','background-repeat':'no-repeat', 
-			backgroundSize:'100% 100%'}"></view>
+			<image id="avatarUrl" :src="avatarUrl" mode="widthFix"></image>
+			<!-- <view id="avatarUrl" :style="{backgroundImage: 'url(' + avatarUrl + ')','background-repeat':'no-repeat', 
+			backgroundSize:'100% 100%'}"></view> -->
 			<text class="userName">{{userName}}</text>
+			<view class="messageBox" @tap="goToMessage">
+				<uni-badge :customStyle="{background: '#64B3D4'}" class="uni-badge-left-margin" :text="unreadCount"
+					absolute="rightTop" size="small">
+					<image src=" ../../static/image/message.png" mode="widthFix"></image>
+				</uni-badge>
+			</view>
 			<view class="logoutBox" @click="dialogToggle('success')">
 				<img src="../../static/image/退出.png" alt="" />
 				<text>退出</text>
@@ -72,11 +79,13 @@
 <script setup>
 	import { request } from '../../utils/request.js'
 	import { logout } from '@/api/login.js'
+	import { getUnreadCount } from '../../api/notice.js'
 	var topBarHeight = ref(0)
 	var haveEnterTajiuzhaoni = ref(false)
 	var MenuButtonHeight = ref(0)
 	var avatarUrl = ref(uni.getStorageSync('avatarUrl'))
 	var userName = ref(uni.getStorageSync('userName'))
+	var unreadCount = ref(0)
 	onLoad(() => {
 		uni.getSystemInfoAsync({
 			success: res => {
@@ -84,8 +93,15 @@
 				MenuButtonHeight.value = uni.getMenuButtonBoundingClientRect().height
 			}
 		})
-
+		getUnreadCount().then(res => {
+			console.log(res)
+			unreadCount.value = res.unreadCount
+		})
 	})
+	// 跳转信息页
+	function goToMessage() {
+		uni.navigateTo({ url: '/pages/message/message' })
+	}
 	// 每次页面显示就要重新获取haveEnterTajiuzhaoni来判断跳转去那个塔就招你页面
 	onShow(() => {
 		uni.getStorage({
@@ -111,32 +127,15 @@
 	}
 
 	function dialogConfirm() {
-		console.log(message.value)
-		console.log(logout)
 		logout().then(res => {
 			console.log(res)
 
 			uni.clearStorage()
-			message.value.open()
 			setTimeout(() => {
 				uni.navigateTo({ url: '/pages/login/login' })
 			}, 1500)
 
 		})
-		// request({ url: 'student/logout', method: 'POST' }).then(res => {
-		// 	console.log(res)
-		// 	if (res.code == 200) {
-		// 		uni.clearStorage()
-		// 		message.value.open()
-		// 		setTimeout(() => {
-		// 			uni.navigateTo({ url: '/pages/login/login' })
-		// 		}, 1500)
-
-
-		// 	}
-		// })
-
-
 	}
 </script>
 
@@ -168,6 +167,14 @@
 		height: 60px;
 		border-radius: 50%;
 		margin: 20px auto 0;
+	}
+
+	.messageBox {
+		margin: 20px 0;
+	}
+
+	.messageBox image {
+		width: 20px;
 	}
 
 	.logoutBox {

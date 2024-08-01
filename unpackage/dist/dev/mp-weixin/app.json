@@ -11,7 +11,11 @@
     "pages/toudijianli-index/toudijianli-index",
     "pages/tajiuzhaoni/tajiuzhaoni",
     "pages/profileDetail/profileDetail",
-    "api/login/login"
+    "api/login/login",
+    "pages/schduleIndex/schduleIndex",
+    "pages/schduleDetail/schduleDetail",
+    "components/interviewDetail/interviewDetail/interviewDetail",
+    "pages/message/message"
   ],
   "usingComponents": {
     "van-toast": "/wxcomponents/vant/toast/index"

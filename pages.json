@@ -69,10 +69,32 @@
 			}
 		},
 		{
-			"path" : "api/login/login",
-			"style" : 
-			{
-				"navigationBarTitleText" : ""
+			"path": "api/login/login",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		}, {
+			"path": "pages/schduleIndex/schduleIndex",
+			"style": {
+				"navigationBarTitleText": "塔就招你"
+			}
+		},
+		{
+			"path": "pages/schduleDetail/schduleDetail",
+			"style": {
+				"navigationBarTitleText": "详情"
+			}
+		},
+		{
+			"path": "components/interviewDetail/interviewDetail/interviewDetail",
+			"style": {
+				"navigationBarTitleText": "详情"
+			}
+		},
+		{
+			"path": "pages/message/message",
+			"style": {
+				"navigationBarTitleText": "消息"
 			}
 		}
 

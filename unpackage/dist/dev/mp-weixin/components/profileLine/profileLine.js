@@ -1,5 +1,6 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
+const common_assets = require("../../common/assets.js");
 const _sfc_main = {
   name: "profileLine",
   props: {
@@ -17,8 +18,9 @@ const _sfc_main = {
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return {
     a: common_vendor.t($props.name),
-    b: common_vendor.o((...args) => $options.chooseProfile && $options.chooseProfile(...args))
+    b: common_assets._imports_0$1,
+    c: common_vendor.o((...args) => $options.chooseProfile && $options.chooseProfile(...args))
   };
 }
-const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "C:/Users/XXX/Desktop/2023学期工作/招新小程序/enrollSystem/components/profileLine/profileLine.vue"]]);
+const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render]]);
 wx.createComponent(Component);

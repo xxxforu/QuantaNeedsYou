@@ -1,5 +1,6 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
+const common_assets = require("../../common/assets.js");
 const utils_request = require("../../utils/request.js");
 if (!Array) {
   const _easycom_uni_icons2 = common_vendor.resolveComponent("uni-icons");
@@ -96,42 +97,44 @@ const _sfc_main = {
     };
     return (_ctx, _cache) => {
       return common_vendor.e({
-        a: common_vendor.o([($event) => common_vendor.unref(formData).name = $event.detail.value, (...args) => common_vendor.unref(clearInputName) && common_vendor.unref(clearInputName)(...args)]),
-        b: common_vendor.unref(formData).name,
-        c: common_vendor.unref(showClearIconName)
+        a: common_assets._imports_0$4,
+        b: common_vendor.o([($event) => common_vendor.unref(formData).name = $event.detail.value, (...args) => common_vendor.unref(clearInputName) && common_vendor.unref(clearInputName)(...args)]),
+        c: common_vendor.unref(formData).name,
+        d: common_vendor.unref(showClearIconName)
       }, common_vendor.unref(showClearIconName) ? {
-        d: common_vendor.o(common_vendor.unref(clearIconName)),
-        e: common_vendor.p({
+        e: common_vendor.o(common_vendor.unref(clearIconName)),
+        f: common_vendor.p({
           type: "close",
           size: "20"
         })
       } : {}, {
-        f: common_vendor.o([($event) => common_vendor.unref(formData).studentNum = $event.detail.value, (...args) => common_vendor.unref(clearInputNum) && common_vendor.unref(clearInputNum)(...args)]),
-        g: common_vendor.unref(formData).studentNum,
-        h: common_vendor.unref(showClearIconNum)
+        g: common_assets._imports_1$2,
+        h: common_vendor.o([($event) => common_vendor.unref(formData).studentNum = $event.detail.value, (...args) => common_vendor.unref(clearInputNum) && common_vendor.unref(clearInputNum)(...args)]),
+        i: common_vendor.unref(formData).studentNum,
+        j: common_vendor.unref(showClearIconNum)
       }, common_vendor.unref(showClearIconNum) ? {
-        i: common_vendor.o(common_vendor.unref(clearIconNum)),
-        j: common_vendor.p({
+        k: common_vendor.o(common_vendor.unref(clearIconNum)),
+        l: common_vendor.p({
           type: "close",
           size: "20"
         })
       } : {}, {
-        k: common_vendor.t(common_vendor.unref(facultyList)[common_vendor.unref(pickerIndex)]),
-        l: common_vendor.unref(pickerIndex),
-        m: common_vendor.unref(facultyList),
-        n: common_vendor.o((...args) => common_vendor.unref(bindPickerChange) && common_vendor.unref(bindPickerChange)(...args)),
-        o: common_vendor.o((...args) => common_vendor.unref(submitForm) && common_vendor.unref(submitForm)(...args)),
-        p: common_vendor.t(common_vendor.unref(messageText)),
-        q: common_vendor.unref(type) === "left" || common_vendor.unref(type) === "right" ? 1 : "",
-        r: common_vendor.sr(popup, "5f117500-2", {
+        m: common_assets._imports_2,
+        n: common_vendor.t(common_vendor.unref(facultyList)[common_vendor.unref(pickerIndex)]),
+        o: common_vendor.unref(pickerIndex),
+        p: common_vendor.unref(facultyList),
+        q: common_vendor.o((...args) => common_vendor.unref(bindPickerChange) && common_vendor.unref(bindPickerChange)(...args)),
+        r: common_vendor.o((...args) => common_vendor.unref(submitForm) && common_vendor.unref(submitForm)(...args)),
+        s: common_vendor.t(common_vendor.unref(messageText)),
+        t: common_vendor.unref(type) === "left" || common_vendor.unref(type) === "right" ? 1 : "",
+        v: common_vendor.sr(popup, "5f117500-2", {
           "k": "popup"
         }),
-        s: common_vendor.p({
+        w: common_vendor.p({
           ["background-color"]: "#fff"
         })
       });
     };
   }
 };
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "C:/Users/XXX/Desktop/2023学期工作/招新小程序/enrollSystem/pages/info/info.vue"]]);
-wx.createPage(MiniProgramPage);
+wx.createPage(_sfc_main);

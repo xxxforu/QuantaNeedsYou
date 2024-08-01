@@ -9,8 +9,10 @@ function service(options = {}) {
     "Authorization": `${token || false}`
     // 这里是token(可自行修改)
   };
+  common_vendor.index.showLoading({ title: "加载中" });
   return new Promise((resolved, rejected) => {
     options.success = (res) => {
+      common_vendor.index.hideLoading();
       if (res.data.code !== 200) {
         common_vendor.index.showToast({
           icon: "none",
@@ -23,6 +25,7 @@ function service(options = {}) {
       }
     };
     options.fail = (err) => {
+      common_vendor.index.hideLoading();
       common_vendor.index.showToast({
         icon: "none",
         duration: 3e3,

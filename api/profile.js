@@ -7,34 +7,59 @@ function objectToKeyValuePairs(obj) {
 
 
 /**
- *    登陆请求
+ *    修改简历
  */
-export function resume(resumeId, data) {
+export function putResume(resumeId, data) {
 	return request({
 		url: 'resume/' + resumeId,
 		method: 'PUT',
 		data
 	})
 }
-
 /**
- *    获取用户信息
+ *    删除简历
  */
-export function info(data) {
+export function deleteResume(resumeId, data) {
 	return request({
-		url: 'student/info',
+		url: 'resume/' + resumeId,
+		method: 'DELETE',
+		data
+	})
+}
+/**
+ *    新建简历
+ */
+export function postResume(data) {
+	return request({
+		url: 'resume/',
 		method: 'POST',
 		data
 	})
 }
-
-
 /**
- *    获取用户信息
+ *    获取简历列表
  */
-export function logout() {
+export function getResumeList() {
 	return request({
-		url: 'student/logout',
-		method: 'POST'
+		url: 'resume/',
+		method: 'GET'
+	})
+}
+/**
+ *    获取简历详细
+ */
+export function getResumeDetail(resumeId) {
+	return request({
+		url: 'resume/' + resumeId,
+		method: 'GET'
+	})
+}
+/**
+ *    修改简历名
+ */
+export function ChangeResumeName(resumeId, name) {
+	return request({
+		url: 'resume/' + resumeId + '/' + name,
+		method: 'PUT'
 	})
 }

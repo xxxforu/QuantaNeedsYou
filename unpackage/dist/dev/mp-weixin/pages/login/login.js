@@ -1,5 +1,6 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
+const common_assets = require("../../common/assets.js");
 const utils_request = require("../../utils/request.js");
 const _sfc_main = {
   __name: "login",
@@ -12,26 +13,6 @@ const _sfc_main = {
       }
       console.log(canIUseGetUserProfile.value);
     });
-    function debounce(fn, delay, immediate = true) {
-      let timer = null;
-      let isInvoke = false;
-      const _debounce = () => {
-        console.log("222");
-        if (timer)
-          clearTimeout(timer);
-        if (immediate && !isInvoke) {
-          fn();
-          isInvoke = true;
-        } else {
-          timer = setTimeout(() => {
-            fn();
-            isInvoke = false;
-            timer = null;
-          }, delay);
-        }
-      };
-      return _debounce;
-    }
     function weixinLogin() {
       utils_request.request({ url: "student/login?code=" + code, method: "POST" }).then((res) => {
         if (res.code === 200) {
@@ -85,60 +66,23 @@ const _sfc_main = {
       });
     }
     function getUserProfile() {
-      common_vendor.index.getUserProfile({
-        lang: "zh_CN",
-        desc: "用户登录",
-        // 声明获取用户个人信息后的用途，后续会展示在弹窗中，
-        success: (res) => {
-          console.log(res.userInfo);
-          common_vendor.index.setStorage({
-            data: res.userInfo.avatarUrl,
-            key: "avatarUrl"
-          });
-          common_vendor.index.login({
-            success: function(res2) {
-              console.log(res2.code);
-              if (res2.code) {
-                code = res2.code;
-                weixinLogin();
-              }
-            }
-          });
+      common_vendor.index.login({
+        success: function(res) {
+          console.log(res.code);
+          if (res.code) {
+            code = res.code;
+            weixinLogin();
+          }
         }
       });
     }
-    var debounceGetUseProfile = debounce(getUserProfile, 1500);
-    function bindGetUserInfo() {
-      return new Promise((resolve, reject) => {
-        common_vendor.index.getUserInfo({
-          lang: "zh_CN",
-          success: (res) => {
-            common_vendor.index.login({
-              success: function(res2) {
-                if (res2.code) {
-                  code = res2.code;
-                  weixinLogin();
-                }
-              }
-            });
-            resolve(res.userInfo);
-          },
-          fail: (err) => {
-            reject(err);
-          }
-        });
-      });
-    }
     return (_ctx, _cache) => {
-      return common_vendor.e({
-        a: common_vendor.unref(canIUseGetUserProfile)
-      }, common_vendor.unref(canIUseGetUserProfile) ? {
-        b: common_vendor.o((...args) => common_vendor.unref(debounceGetUseProfile) && common_vendor.unref(debounceGetUseProfile)(...args))
-      } : {
-        c: common_vendor.o(bindGetUserInfo)
-      });
+      return {
+        a: common_assets._imports_0,
+        b: common_assets._imports_1,
+        c: common_vendor.o(getUserProfile)
+      };
     };
   }
 };
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "C:/Users/XXX/Desktop/2023学期工作/招新小程序/enrollSystem/pages/login/login.vue"]]);
-wx.createPage(MiniProgramPage);
+wx.createPage(_sfc_main);

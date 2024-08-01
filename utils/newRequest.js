@@ -8,10 +8,14 @@ function service(options = {}) {
 		'content-type': 'application/json',
 		'Authorization': `${token || false}` // 这里是token(可自行修改)
 	}
+	// 显示加载框
+	uni.showLoading({ title: '加载中' })
+
 
 	// resolved是返回成功数据，rejected返回错误数据
 	return new Promise((resolved, rejected) => {
 		options.success = res => {
+			uni.hideLoading()
 			// 如果请求回来的状态码不是200则执行以下操作
 			if (res.data.code !== 200) {
 				// 非成功状态码弹窗
@@ -29,6 +33,7 @@ function service(options = {}) {
 			}
 		}
 		options.fail = err => {
+			uni.hideLoading()
 			// 请求失败弹窗
 			uni.showToast({
 				icon: 'none',

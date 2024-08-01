@@ -1,9 +1,9 @@
 <script setup>
-	import { resume } from '../../api/profile.js'
-	import { request } from '../../utils/request.js'
+	import { getResumeDetail, postResume, putResume } from '../../api/profile.js'
+	import { submit } from '../../api/submit.js'
 	var profileData = ref({})
 	var from = ref() //值为数字1 2 3 分别代表进来本页面的父页面是“塔就招你”，“我的简历-修改”和“我的简历-创建”
-
+	var resumeId = ref()
 	// 选择部门相关
 	var pickerIndex = ref(0)
 	var facultyList = ref([
@@ -50,11 +50,19 @@
 		from.value = option.from
 		uni.setNavigationBarTitle({ title: option.name })
 		if (option.resumeId) { //如果是现有的简历 则获取其数据
-			var resumeId = option.resumeId
-			request({ url: 'resume/' + option.resumeId }).then(res => {
-				profileData.value = res.data
-				console.log(profileData.value)
+
+			resumeId.value = option.resumeId
+			getResumeDetail(option.resumeId).then(res => {
+				profileData.value = res
+				// 必须要按照此格式才可以回显头像！
+				profileData.value.getBackImage = [{
+					'name': '用户头像',
+					'extname': 'image',
+					'url': profileData.value.image
+				}]
+				console.log(res)
 			})
+
 		} else {
 			fileList.value.url = uni.getStorageSync('avatarUrl')
 			profileData.value.name = uni.getStorageSync('userName')
@@ -62,14 +70,20 @@
 			profileData.value.grade = uni.getStorageSync('grade')
 			profileData.value.studentNum = uni.getStorageSync('studentNum')
 		}
-		if (option.department) {
-			profileData.value.department = option.department
+		if (option.departmentId) {
+			profileData.value.department = option.departmentId
+		}
+		if (option.name) {
+			profileData.value.name = option.name
 		}
 	})
 
 	// 是否保存到“我的简历”胶囊按钮改变事件
+	var save = 0
+
 	function ifSave(event) {
 		console.log(event.detail.value) // true/false
+		save = event.detail.value ? 1 : 0
 	}
 
 	//上传头像
@@ -81,66 +95,225 @@
 		border: { radius: '15px' }
 	})
 
+	var hasChoose = false
 
 	function selectok(e) {
-		profileData.value.image = e.tempFiles[0].file
+		console.log(e)
+		profileData.value.image = e.tempFilePaths[0]
+		// profileData.value.image = e.tempFiles[0].file
+		console.log(profileData.value.image)
+		hasChoose = true
 	}
 
 
 	//按钮点击相关事件
-	//校验
+	//校验信息是否填写完整
 	function checkProfileData() {
-		if (profileData.value.image && profileData.value.sex && profileData.value.phone && profileData.value.email &&
-			profileData.value.skillsAdvantages && profileData.value.others)
-			return true
-		else return false
+		if (!profileData.value.image || profileData.value.image.length == 0) return false
+		if (!('sex' in profileData.value)) return false
+		if (!profileData.value.phone || profileData.value.phone.length == 0) return false
+		if (!profileData.value.email || profileData.value.email.length == 0) return false
+		if (!profileData.value.skillsAdvantages || profileData.value.skillsAdvantages.length == 0) return false
+		// if (!profileData.value.others || profileData.value.others.length == 0) return false //others非必须
+		return true
+	}
+	// 修改简历
+	function changeResume() {
+		return new Promise((resolve, reject) => {
+			uni.uploadFile({
+				url: 'http://47.120.73.35:8088/quanta/recruitment_reception/resume/' + resumeId.value,
+				filePath: profileData.value.image,
+				name: 'image',
+				formData: {
+					'sex': profileData.value.sex,
+					'department_id': profileData.value.department,
+					'email': profileData.value.email,
+					'phone': profileData.value.phone,
+					'skill_advantages': profileData.value.skillsAdvantages,
+					'others': profileData.value.others
+				},
+				method: 'POST',
+				header: { 'Authorization': uni.getStorageSync('token') },
+				success(res) {
+					resolve(res)
+				},
+				fail(err) {
+					console.log(err)
+					reject(err)
+				}
+			})
+		})
+	}
+
+	// 新建简历
+	function newResume() {
+		return new Promise((resolve, reject) => {
+
+			uni.uploadFile({
+				url: 'http://47.120.73.35:8088/quanta/recruitment_reception/resume',
+				filePath: profileData.value.image,
+				name: 'image',
+				formData: {
+					'sex': profileData.value.sex,
+					'department_id': profileData.value.department,
+					'email': profileData.value.email,
+					'skill_advantages': profileData.value.skillsAdvantages,
+					'others': profileData.value.others,
+					'phone': profileData.value.phone,
+					'name': profileData.value.name,
+					'save': save,
+				},
+				method: 'POST',
+				header: { 'Authorization': uni.getStorageSync('token') },
+				success(result) {
+					let res = JSON.parse(result.data).data
+					if (res) {
+						resolve(res.resumeId)
+					}
+				},
+				fail(err) {
+					console.log(err)
+					reject(err)
+				}
+			})
+		})
+	}
+	var alertDialog = ref(null)
+	var msgType = 'info'
+	// 提交简历
+	function submitResume(resumeID, department) {
+		if (resumeId.value && save) {
+			if (!hasChoose) {
+				uni.downloadFile({
+					url: profileData.value.image,
+					success(res) {
+						console.log(res)
+						profileData.value.image = res.tempFilePath
+						changeResume().then(res => { //成功更新了就上传
+							submit({
+								resumeId: resumeId.value,
+								departmentId: profileData.value.department
+							}).then(res => {
+								console.log(res)
+							})
+						})
+					},
+					fail() {
+						uni.showToast({
+							icon: 'none',
+							duration: 3000,
+							title: '服务器错误,请稍后再试'
+						})
+					}
+				})
+			} else {
+				changeResume().then(res => { //成功更新了就上传
+					submit({
+						resumeId: resumeId.value,
+						departmentId: profileData.value.department
+					}).then(res => {
+						console.log(res)
+					})
+				})
+			}
+
+		} else if (!resumeId.value) {
+			newResume().then(newResumeId => {
+				console.log(newResumeId) // 拿到newResumeId 再去submit
+				resumeId.value = newResumeId
+				submit({
+					resumeId: resumeId.value,
+					departmentId: profileData.value.department
+				}).then(res => {
+					console.log(res)
+				})
+			})
+		} else {
+			submit({
+				resumeId: resumeId.value,
+				departmentId: profileData.value.department
+			}).then(res => {
+				console.log(res)
+			})
+		}
+
 	}
 
 	function resumeAndSubmit() {
-		if (checkProfileData()) {
-			console.log(resume)
-			resume(resumeId, profileData.value).then(res => {
-				console.log(res)
+		// 先判断信息是否完整
+		if (!checkProfileData()) {
+			uni.showToast({
+				title: '请完整填写简历！',
+				icon: 'error'
 			})
-		} else console.log(profileData.value)
+			return
+		}
+		alertDialog.value.open()
+		// 先判断是否为新建的简历
+		// if (resumeId.value) { // 是已有的简历 
+		// 	console.log('resumeId:', resumeId.value)
+		// 	if (save) { // 做更新简历的操作
+		// 		changeResume().then(res => { //成功更新了就上传
+		// 			console.log(res)
+
+		// 		})
+		// 	} else {
+		// 		alertDialog.value.open()
+		// 	}
+		// } else { // 直接调用postResume，里面有参数save
+		// 	newResume().then(newResumeId => {
+		// 		console.log(newResumeId) // 拿到newResumeId 再去submit
+		// 		resumeId.value = newResumeId
+
+		// 		alertDialog.value.open()
+		// 	})
+		// }
 	}
 </script>
 
 <template>
+	<uni-popup ref="alertDialog" type="dialog">
+		<uni-popup-dialog :type="msgType" cancelText="我再想想" confirmText="确认投递" title="是否确认投递该简历" content="注:投递后无法修改或撤回"
+			@confirm="submitResume"></uni-popup-dialog>
+	</uni-popup>
+
 	<view class="container">
 		<h2 id="title">基本信息</h2>
 		<view class="inputAndPhoto">
 			<view class="photo">
-				<uni-file-picker ref="file" :value="fileList" class="upload" auto-upload="false" limit="1" :del-icon="false"
-					disable-preview :imageStyles="imageStyles" file-mediatype="image" @select="selectok">选择照片</uni-file-picker>
+				<uni-file-picker ref="file" v-model="profileData.getBackImage " :value="profileData.getBackImage" class="upload"
+					auto-upload="false" limit="1" :del-icon="false" disable-preview :imageStyles="imageStyles"
+					file-mediatype="image" @select="selectok">选择照片</uni-file-picker>
 				<!-- <image :src="profileData.image" mode="aspectFill"></image> -->
 			</view>
 			<view class="input">
 				<uni-forms ref="form1" :rules="customRules" :modelValue="profileData">
 					<uni-forms-item label="姓名">
-						<uni-easyinput disabled v-model="profileData.name" placeholder="请输入姓名" />
+						<uni-easyinput primaryColor="#fff" disabled v-model="profileData.name" placeholder="请输入姓名" />
 					</uni-forms-item>
 					<uni-forms-item label="性别">
 						<uni-data-checkbox v-model="profileData.sex" :localdata="sexs" />
 					</uni-forms-item>
 					<uni-forms-item label="学号">
-						<uni-easyinput disabled class="inputBox" v-model="profileData.studentNum" placeholder="请输入学号" />
+						<uni-easyinput primaryColor="#fff" disabled class="inputBox" v-model="profileData.studentNum"
+							placeholder="请输入学号" />
 					</uni-forms-item>
 					<uni-forms-item class="inputBox" label="学院">
-						<uni-easyinput disabled class="inputBox" v-model="profileData.faculty" />
+						<uni-easyinput primaryColor="#fff" disabled class="inputBox" v-model="profileData.faculty" />
 						<!-- <picker disabled class="inputBox" mode="selector" :value="pickerIndex" :range="facultyList"
 							@change="bindPickerChange">
 							<view>{{ facultyList[pickerIndex] }}</view>
 						</picker> -->
 					</uni-forms-item>
 					<uni-forms-item label="年级">
-						<uni-easyinput disabled class="inputBox" v-model="profileData.grade" placeholder="请输入年级" />
+						<uni-easyinput primaryColor="#fff" disabled class="inputBox" v-model="profileData.grade"
+							placeholder="请输入年级" />
 					</uni-forms-item>
 					<uni-forms-item label="电话">
-						<uni-easyinput class="inputBox" v-model="profileData.phone" placeholder="请输入电话" />
+						<uni-easyinput primaryColor="#fff" class="inputBox" v-model="profileData.phone" placeholder="请输入电话" />
 					</uni-forms-item>
 					<uni-forms-item label="邮箱">
-						<uni-easyinput class="inputBox" v-model="profileData.email" placeholder="请输入邮箱" />
+						<uni-easyinput primaryColor="#fff" class="inputBox" v-model="profileData.email" placeholder="请输入邮箱" />
 					</uni-forms-item>
 
 				</uni-forms>
@@ -149,13 +322,14 @@
 		<view class="skill">
 			<p>技能/优势</p>
 			<uni-forms-item>
-				<uni-easyinput type="textarea" v-model="profileData.skillsAdvantages" placeholder="请输入自我介绍" />
+				<uni-easyinput primaryColor="#fff" type="textarea" v-model="profileData.skillsAdvantages"
+					placeholder="请输入自我介绍" />
 			</uni-forms-item>
 		</view>
 		<view class="other">
 			<p>其他</p>
 			<uni-forms-item>
-				<uni-easyinput type="textarea" v-model="profileData.others" />
+				<uni-easyinput primaryColor="#fff" type="textarea" v-model="profileData.others" />
 			</uni-forms-item>
 		</view>
 		<view v-if="from==1" class="saveInMyProfile">

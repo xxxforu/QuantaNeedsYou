@@ -48,6 +48,12 @@
   border-radius: 50%;
   margin: 20px auto 0;
 }
+.messageBox {
+  margin: 20px 0;
+}
+.messageBox image {
+  width: 20px;
+}
 .logoutBox {
   width: 100%;
   display: flex;

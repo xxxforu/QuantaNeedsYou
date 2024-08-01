@@ -13,6 +13,9 @@ if (!Math) {
   "./pages/toudijianli-index/toudijianli-index.js";
   "./pages/tajiuzhaoni/tajiuzhaoni.js";
   "./pages/profileDetail/profileDetail.js";
+  "./pages/schduleIndex/schduleIndex.js";
+  "./pages/schduleDetail/schduleDetail.js";
+  "./pages/message/message.js";
 }
 const _sfc_main = {
   onLaunch: function() {
@@ -24,9 +27,8 @@ const _sfc_main = {
     console.log("App Hide");
   }
 };
-const App = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "C:/Users/XXX/Desktop/2023学期工作/招新小程序/enrollSystem/App.vue"]]);
 function createApp() {
-  const app = common_vendor.createSSRApp(App);
+  const app = common_vendor.createSSRApp(_sfc_main);
   return { app };
 }
 createApp().app.mount("#app");

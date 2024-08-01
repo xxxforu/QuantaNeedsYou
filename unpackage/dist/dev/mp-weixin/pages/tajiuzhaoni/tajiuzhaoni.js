@@ -1,6 +1,8 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
-const utils_request = require("../../utils/request.js");
+const common_assets = require("../../common/assets.js");
+const api_submit = require("../../api/submit.js");
+const api_profile = require("../../api/profile.js");
 if (!Array) {
   const _easycom_departmentLine2 = common_vendor.resolveComponent("departmentLine");
   const _easycom_profileLine2 = common_vendor.resolveComponent("profileLine");
@@ -25,46 +27,31 @@ const _sfc_main = {
     var profileListEmpty = common_vendor.ref(null);
     var departmentEmpty = common_vendor.ref(false);
     var deliveryEmpty = common_vendor.ref(true);
-    var departmentList = common_vendor.ref([
-      {
-        "departmentId": 1001,
-        "name": "产品部"
-      },
-      {
-        "departmentId": 1002,
-        "name": "设计部"
-      },
-      {
-        "departmentId": 1003,
-        "name": "研发部前端方向"
-      },
-      {
-        "departmentId": 1004,
-        "name": "研发部安卓方向"
-      },
-      {
-        "departmentId": 1005,
-        "name": "研发部后端方向"
-      }
-    ]);
+    common_vendor.ref();
+    var departmentList = common_vendor.ref([]);
     var profileList = common_vendor.ref([]);
-    function getDepartment(isRefresh) {
-      utils_request.request({ url: "department" }).then((res) => {
+    function getDepartment(isRefresh, hasSubmitted) {
+      isNotDeliver.value = !hasSubmitted;
+      api_submit.department({ hasSubmitted }).then((res) => {
         console.log(res);
-        if (res.code != 200) {
-          departmentEmpty.value = true;
-        } else {
-          departmentList.value = res.data;
+        if (!hasSubmitted && res != []) {
+          deliveryEmpty.value = false;
         }
+        departmentList.value = res;
         if (isRefresh)
           common_vendor.index.stopPullDownRefresh();
+      }).catch((error) => {
+        if (error.data.code == 402) {
+          departmentEmpty.value = true;
+        }
+        console.log(error);
       });
     }
     common_vendor.onPullDownRefresh(() => {
-      getDepartment(true);
+      getDepartment(true, !isNotDeliver.value);
     });
     common_vendor.onLoad(() => {
-      getDepartment();
+      getDepartment(true, false);
       common_vendor.index.setStorage({
         key: "haveEnterTajiuzhaoni",
         data: false
@@ -80,10 +67,8 @@ const _sfc_main = {
     });
     var chooseDepartmentId = 0;
     function getProfileList() {
-      utils_request.request({ url: "resume" }).then((res) => {
-        if (res.code == 200) {
-          profileList.value = res.data;
-        }
+      api_profile.getResumeList().then((res) => {
+        profileList.value = res;
         console.log(profileList.value);
       });
     }
@@ -100,7 +85,16 @@ const _sfc_main = {
     function newProfileDecideName() {
       inputDialog.value.open();
     }
+    const inputClose = common_vendor.ref(null);
     function dialogInputConfirm(val) {
+      if (val == "") {
+        common_vendor.index.showToast({
+          title: "请命名简历！",
+          icon: "error"
+        });
+        return;
+      }
+      inputClose.value.val = "";
       common_vendor.index.navigateTo({
         url: "/pages/profileDetail/profileDetail?name=" + val + "&departmentId=" + chooseDepartmentId + "&from=1"
       });
@@ -112,16 +106,19 @@ const _sfc_main = {
         url: "/pages/profileDetail/profileDetail?name=" + name + "&departmentId=" + chooseDepartmentId + "&resumeId=" + id + "&from=1"
       });
     }
+    function goTOSchduleIndex(id) {
+      common_vendor.index.navigateTo({ url: "/pages/schduleIndex/schduleIndex?id=" + id });
+    }
     return (_ctx, _cache) => {
       return common_vendor.e({
         a: common_vendor.unref(isNotDeliver) == true ? 1 : "",
-        b: common_vendor.o(($event) => common_vendor.isRef(isNotDeliver) ? isNotDeliver.value = true : isNotDeliver = true),
+        b: common_vendor.o(($event) => getDepartment(true, false)),
         c: common_vendor.unref(isNotDeliver) == false ? 1 : "",
-        d: common_vendor.o(($event) => common_vendor.isRef(isNotDeliver) ? isNotDeliver.value = false : isNotDeliver = false),
-        e: !common_vendor.unref(departmentEmpty)
-      }, !common_vendor.unref(departmentEmpty) ? {} : {}, {
-        f: common_vendor.unref(departmentEmpty)
-      }, common_vendor.unref(departmentEmpty) ? {
+        d: common_vendor.o(($event) => getDepartment(true, true)),
+        e: common_vendor.unref(departmentEmpty)
+      }, common_vendor.unref(departmentEmpty) ? {} : {}, {
+        f: !common_vendor.unref(departmentEmpty)
+      }, !common_vendor.unref(departmentEmpty) ? {
         g: common_vendor.f(common_vendor.unref(departmentList), (item, k0, i0) => {
           return {
             a: item.departmentId,
@@ -138,12 +135,27 @@ const _sfc_main = {
         h: common_vendor.unref(isNotDeliver),
         i: common_vendor.unref(deliveryEmpty)
       }, common_vendor.unref(deliveryEmpty) ? {} : {}, {
-        j: !common_vendor.unref(isNotDeliver),
-        k: common_vendor.f(common_vendor.unref(profileList), (item, k0, i0) => {
+        j: !common_vendor.unref(deliveryEmpty)
+      }, !common_vendor.unref(deliveryEmpty) ? {
+        k: common_vendor.f(common_vendor.unref(departmentList), (item, k0, i0) => {
+          return {
+            a: item.departmentId,
+            b: common_vendor.o(goTOSchduleIndex, item.departmentId),
+            c: "80f8bad8-1-" + i0,
+            d: common_vendor.p({
+              title: item.name,
+              id: item.departmentId
+            }),
+            e: item.departmentId
+          };
+        })
+      } : {}, {
+        l: !common_vendor.unref(isNotDeliver),
+        m: common_vendor.f(common_vendor.unref(profileList), (item, k0, i0) => {
           return {
             a: item.resumeId,
             b: common_vendor.o(chooseProfile, item.resumeId),
-            c: "80f8bad8-2-" + i0 + ",80f8bad8-1",
+            c: "80f8bad8-3-" + i0 + ",80f8bad8-2",
             d: common_vendor.p({
               name: item.resumeName,
               id: item.resumeId
@@ -151,39 +163,41 @@ const _sfc_main = {
             e: item.resumeId
           };
         }),
-        l: common_vendor.o(newProfileDecideName),
-        m: common_vendor.unref(type) === "left" || common_vendor.unref(type) === "right" ? 1 : "",
-        n: common_vendor.sr(openProfile, "80f8bad8-1", {
+        n: common_vendor.o(newProfileDecideName),
+        o: common_vendor.unref(type) === "left" || common_vendor.unref(type) === "right" ? 1 : "",
+        p: common_vendor.sr(openProfile, "80f8bad8-2", {
           "k": "openProfile"
         }),
-        o: common_vendor.p({
+        q: common_vendor.p({
           ["background-color"]: "#fff"
         }),
-        p: common_vendor.o(newProfileDecideName),
-        q: common_vendor.unref(type) === "left" || common_vendor.unref(type) === "right" ? 1 : "",
-        r: common_vendor.sr(profileListEmpty, "80f8bad8-3", {
+        r: common_assets._imports_0$7,
+        s: common_vendor.o(newProfileDecideName),
+        t: common_vendor.unref(type) === "left" || common_vendor.unref(type) === "right" ? 1 : "",
+        v: common_vendor.sr(profileListEmpty, "80f8bad8-4", {
           "k": "profileListEmpty"
         }),
-        s: common_vendor.p({
+        w: common_vendor.p({
           ["background-color"]: "#fff"
         }),
-        t: common_vendor.sr("inputClose", "80f8bad8-5,80f8bad8-4"),
-        v: common_vendor.o(dialogInputConfirm),
-        w: common_vendor.p({
+        x: common_vendor.sr(inputClose, "80f8bad8-6,80f8bad8-5", {
+          "k": "inputClose"
+        }),
+        y: common_vendor.o(dialogInputConfirm),
+        z: common_vendor.p({
           mode: "input",
           title: "简历命名",
-          value: "",
           placeholder: "请输入内容"
         }),
-        x: common_vendor.sr(inputDialog, "80f8bad8-4", {
+        A: common_vendor.sr(inputDialog, "80f8bad8-5", {
           "k": "inputDialog"
         }),
-        y: common_vendor.p({
+        B: common_vendor.p({
           type: "dialog"
         })
       });
     };
   }
 };
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-80f8bad8"], ["__file", "C:/Users/XXX/Desktop/2023学期工作/招新小程序/enrollSystem/pages/tajiuzhaoni/tajiuzhaoni.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-80f8bad8"]]);
 wx.createPage(MiniProgramPage);

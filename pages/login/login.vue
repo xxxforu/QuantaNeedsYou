@@ -1,4 +1,5 @@
 <script setup>
+	import { NavigationFailureType } from 'vue-router'
 	import { request } from '../../utils/request.js'
 	var canIUseGetUserProfile = ref(false)
 	var code = ''
@@ -103,28 +104,34 @@
 
 
 	function getUserProfile() {
-		uni.getUserProfile({
-			lang: 'zh_CN',
-			desc: '用户登录', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，
-			success: res => {
-				console.log(res.userInfo)
-				uni.setStorage({
-					data: res.userInfo.avatarUrl,
-					key: 'avatarUrl'
-				})
-				uni.login({
-					success: function(res) {
-						console.log(res.code)
-						if (res.code) {
-							code = res.code
-							weixinLogin()
-						}
-					}
-				})
+		uni.login({
+			success: function(res) {
+				console.log(res.code)
+				if (res.code) {
+					code = res.code
+					weixinLogin()
+				}
 			}
 		})
+		// uni.getUserProfile({
+		// 	lang: 'zh_CN',
+		// 	desc: '用户登录', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，
+		// 	success: res => {
+		// 		console.log(res.userInfo)
+		// 		console.log(res.errMsg)
+		// 		uni.setStorage({
+		// 			data: res.userInfo.avatarUrl,
+		// 			key: 'avatarUrl'
+		// 		})
 
+		// 	},
+		// 	fail(err) {
+		// 		console.log(err)
+		// 	}
+		// })
 	}
+
+
 	var debounceGetUseProfile = debounce(getUserProfile, 1500)
 
 	function bindGetUserInfo() {
@@ -153,14 +160,16 @@
 <template>
 	<img id="loginBg" src="../../static/image/loginBackground.png" alt="" />
 	<view class="login">
-		<button class="loginButton" v-if="canIUseGetUserProfile" @tap="debounceGetUseProfile">
+		<!-- <button class="loginButton" v-if="canIUseGetUserProfile" @tap="getUserProfile"> -->
+		<button class="loginButton" @tap="getUserProfile">
 			<img class="weixinLogo" src="../../static/image/weixinLogo.png" alt="" />
 			<text class="loginText">微信登陆</text>
 		</button>
-		<button v-else open-type="getUserInfo" @getuserinfo="bindGetUserInfo">
-			登陆
-			<!-- <img class="weixinLogo" src="../../static/image/weixinLogo.png" alt="" /> -->
-		</button>
+
+		<!-- <button v-else open-type="getUserInfo" @getuserinfo="bindGetUserInfo">
+			登陆 -->
+		<!-- <img class="weixinLogo" src="../../static/image/weixinLogo.png" alt="" /> -->
+		<!-- </button> -->
 		<text></text>
 	</view>
 </template>

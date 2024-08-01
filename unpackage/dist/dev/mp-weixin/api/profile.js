@@ -1,10 +1,24 @@
 "use strict";
 const utils_newRequest = require("../utils/newRequest.js");
-function resume(resumeId, data) {
+function deleteResume(resumeId, data) {
   return utils_newRequest.service({
     url: "resume/" + resumeId,
-    method: "PUT",
+    method: "DELETE",
     data
   });
 }
-exports.resume = resume;
+function getResumeList() {
+  return utils_newRequest.service({
+    url: "resume/",
+    method: "GET"
+  });
+}
+function getResumeDetail(resumeId) {
+  return utils_newRequest.service({
+    url: "resume/" + resumeId,
+    method: "GET"
+  });
+}
+exports.deleteResume = deleteResume;
+exports.getResumeDetail = getResumeDetail;
+exports.getResumeList = getResumeList;

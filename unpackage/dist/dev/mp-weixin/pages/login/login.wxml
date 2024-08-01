@@ -1,1 +1,1 @@
-<image id="loginBg" src="/static/image/loginBackground.png" alt=""/><view class="login"><button wx:if="{{a}}" class="loginButton" bindtap="{{b}}"><image class="weixinLogo" src="/static/image/weixinLogo.png" alt=""/><text class="loginText">微信登陆</text></button><button wx:else open-type="getUserInfo" bindgetuserinfo="{{c}}"> 登陆 </button><text></text></view>
+<image id="loginBg" src="{{a}}" alt=""/><view class="login"><button class="loginButton" bindtap="{{c}}"><image class="weixinLogo" src="{{b}}" alt=""/><text class="loginText">微信登陆</text></button><text></text></view>
