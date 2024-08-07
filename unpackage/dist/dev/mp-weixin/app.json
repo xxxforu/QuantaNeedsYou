@@ -2,28 +2,34 @@
   "pages": [
     "pages/login/login",
     "pages/index/index",
-    "pages/info/info",
-    "pages/tajiuzhaoni-HAIBAO/tajiuzhaoni-HAIBAO",
-    "pages/yiqianweiding/yiqianweiding",
-    "pages/yiqianweiding-detail/yiqianweiding-detail",
-    "pages/wodejianli/wodejianli",
-    "pages/xinjianjianli/xinjianjianli",
-    "pages/toudijianli-index/toudijianli-index",
-    "pages/tajiuzhaoni/tajiuzhaoni",
-    "pages/profileDetail/profileDetail",
-    "api/login/login",
-    "pages/schduleIndex/schduleIndex",
-    "pages/schduleDetail/schduleDetail",
-    "components/interviewDetail/interviewDetail/interviewDetail",
-    "pages/message/message"
+    "pages/info/info"
   ],
-  "usingComponents": {
-    "van-toast": "/wxcomponents/vant/toast/index"
-  },
-  "window": {
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "uni-app",
-    "navigationBarBackgroundColor": "#F9E6DA",
-    "backgroundColor": "#F8F8F8"
-  }
+  "subPackages": [
+    {
+      "root": "sub-tajiuzhaoni",
+      "pages": [
+        "tajiuzhaoni/tajiuzhaoni",
+        "schduleDetail/schduleDetail",
+        "schduleIndex/schduleIndex",
+        "tajiuzhaoni-HAIBAO/tajiuzhaoni-HAIBAO",
+        "message/message"
+      ]
+    },
+    {
+      "root": "sub-yiqianweiding",
+      "pages": [
+        "yiqianweiding-detail/yiqianweiding-detail",
+        "yiqianweiding/yiqianweiding"
+      ]
+    },
+    {
+      "root": "sub-wodejianli",
+      "pages": [
+        "profileDetail/profileDetail",
+        "wodejianli/wodejianli"
+      ]
+    }
+  ],
+  "runmode": "liberate",
+  "usingComponents": {}
 }

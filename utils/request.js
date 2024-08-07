@@ -1,4 +1,4 @@
-const baseUrl = 'http://47.120.73.35:8088/quanta/recruitment_reception/' //api的固定前部地址
+const baseUrl = 'https://zx.quantacenter.com/recruitment_reception/' //api的固定前部地址
 export const request = options => {
 	return new Promise((resolve, reject) => {
 		// 设置请求头

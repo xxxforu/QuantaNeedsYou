@@ -1,14 +1,13 @@
 <template>
 	<view class="departmentLineBox" @click="deliverProfile">
 		<text>{{title}}</text>
-		<image src="../../static/image/返回.png" mode=""></image>
+		<image :src="$getStaticFilePath('back.png')" mode=""></image>
 	</view>
 </template>
 
 <script>
 	export default {
 		name: 'departmentLine',
-
 		props: {
 			title: { type: String }, //departmentName
 			id: { type: Number } //departmentId

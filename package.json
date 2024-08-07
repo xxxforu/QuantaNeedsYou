@@ -9,8 +9,5 @@
 	"chromium-args": "--args --explicitly-allowed-ports=101,102,103,6666",
 	"keywords": [],
 	"author": "",
-	"license": "ISC",
-	"dependencies": {
-		"@vant/weapp": "^1.11.6"
-	}
+	"license": "ISC"
 }

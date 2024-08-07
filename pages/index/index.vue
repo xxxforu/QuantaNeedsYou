@@ -8,66 +8,66 @@
 			<view class="messageBox" @tap="goToMessage">
 				<uni-badge :customStyle="{background: '#64B3D4'}" class="uni-badge-left-margin" :text="unreadCount"
 					absolute="rightTop" size="small">
-					<image src=" ../../static/image/message.png" mode="widthFix"></image>
+					<image :src="getStaticFilePath('msg.png')"></image>
 				</uni-badge>
 			</view>
 			<view class="logoutBox" @click="dialogToggle('success')">
-				<img src="../../static/image/退出.png" alt="" />
+				<image :src="getStaticFilePath('exit.png')" alt="" />
 				<text>退出</text>
 			</view>
 		</view>
-		<view class="content" :style="{paddingTop :topBarHeight +MenuButtonHeight+'px' }">
-			<navigator v-if="haveEnterTajiuzhaoni" url="/pages/tajiuzhaoni-HAIBAO/tajiuzhaoni-HAIBAO">
+		<view class=" content" :style="{paddingTop :topBarHeight +MenuButtonHeight+'px' }">
+			<navigator v-if="haveEnterTajiuzhaoni" url="/sub-tajiuzhaoni/tajiuzhaoni-HAIBAO/tajiuzhaoni-HAIBAO">
 				<view class="navBox">
 					<view class="up">
-						<image class="navImg" src="../../static/image/塔就招你.png" mode="widthFix"></image>
+						<image class="navImg" :src="getStaticFilePath('tajiuzhaoni.png')" mode="widthFix"></image>
 					</view>
 					<view class="down">
 						<text class="navTitle">塔就招你</text>
-						<image class="navIcon" src="../../static/image/返回.png" mode=""></image>
+						<image class="navIcon" :src="getStaticFilePath('back.png')" mode=""></image>
 					</view>
 
 				</view>
 			</navigator>
-			<navigator v-else url="/pages/tajiuzhaoni/tajiuzhaoni">
+			<navigator v-else url="/sub-tajiuzhaoni/tajiuzhaoni/tajiuzhaoni">
 				<view class="navBox">
 					<view class="up">
-						<image class="navImg" src="../../static/image/塔就招你.png" mode="widthFix"></image>
+						<image class="navImg" :src="getStaticFilePath('tajiuzhaoni.png')" mode="widthFix"></image>
 					</view>
 					<view class="down">
 						<text class="navTitle">塔就招你</text>
-						<image class="navIcon" src="../../static/image/返回.png" mode=""></image>
+						<image class="navIcon" :src="getStaticFilePath('back.png')" mode=""></image>
 					</view>
 
 				</view>
 			</navigator>
-			<navigator url="/pages/yiqianweiding/yiqianweiding">
+			<navigator url="/sub-yiqianweiding/yiqianweiding/yiqianweiding">
 				<view class="navBox">
 					<view class="up">
-						<image class="navImg" src="../../static/image/一签为定.png" mode="widthFix"></image>
+						<image class="navImg" :src="getStaticFilePath('yiqianweiding.png')" mode="widthFix"></image>
 					</view>
 					<view class="down">
 						<text class="navTitle">一签为定</text>
-						<image class="navIcon" src="../../static/image/返回.png" mode=""></image>
+						<image class="navIcon" :src="getStaticFilePath('back.png')" mode=""></image>
 					</view>
 
 				</view>
 			</navigator>
-			<navigator url="/pages/wodejianli/wodejianli">
+			<navigator url="/sub-wodejianli/wodejianli/wodejianli">
 				<view class="navBox">
 					<view class="up">
-						<image class="navImg" src="../../static/image/我的简历.png" mode="widthFix"></image>
+						<image class="navImg" :src="getStaticFilePath('wodejianli.png')" mode="widthFix"></image>
 					</view>
 					<view class="down">
 						<text class="navTitle">我的简历</text>
-						<image class="navIcon" src="../../static/image/返回.png" mode=""></image>
+						<image class="navIcon" :src="getStaticFilePath('back.png')" mode=""></image>
 					</view>
 
 				</view>
 			</navigator>
 		</view>
 	</view>
-	<uni-popup ref="message" type="message">
+	<uni-popup ref=" message" type="message">
 		<uni-popup-message :type="msgType" :message="messageText" :duration="2000"></uni-popup-message>
 	</uni-popup>
 	<uni-popup ref="alertDialog" type="dialog">
@@ -79,7 +79,13 @@
 <script setup>
 	import { request } from '../../utils/request.js'
 	import { logout } from '@/api/login.js'
+	import { getCurrentInstance } from 'vue'
 	import { getUnreadCount } from '../../api/notice.js'
+	const instance = getCurrentInstance()
+	if (!instance) {
+		throw new Error('getCurrentInstance must be called within setup or lifecycle hook.')
+	}
+	const getStaticFilePath = instance.appContext.config.globalProperties.$getStaticFilePath
 	var topBarHeight = ref(0)
 	var haveEnterTajiuzhaoni = ref(false)
 	var MenuButtonHeight = ref(0)
@@ -100,7 +106,7 @@
 	})
 	// 跳转信息页
 	function goToMessage() {
-		uni.navigateTo({ url: '/pages/message/message' })
+		uni.navigateTo({ url: '/sub-tajiuzhaoni/message/message' })
 	}
 	// 每次页面显示就要重新获取haveEnterTajiuzhaoni来判断跳转去那个塔就招你页面
 	onShow(() => {
@@ -175,6 +181,7 @@
 
 	.messageBox image {
 		width: 20px;
+		height: 20px;
 	}
 
 	.logoutBox {

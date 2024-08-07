@@ -22,26 +22,26 @@
 		<view class="innerBox">
 			<!-- 当日时间 -->
 			<view class="line">
-				<image style="width: 17px;vertical-align: middle;margin-right:10px;" src="../../static/image/startTime.png"
+				<image style="width: 17px;vertical-align: middle;margin-right:10px;" :src="$getStaticFilePath('startTime.png')"
 					mode="widthFix">
 				</image>
 				<text>{{date}}</text>
 			</view>
 			<!-- 未开始 -->
 			<view class="line" v-if="detail.state == 0">
-				<image style="width: 17px;vertical-align: middle;margin-right:10px;" src="../../static/image/noStart.png"
+				<image style="width: 17px;vertical-align: middle;margin-right:10px;" :src="$getStaticFilePath('noStart.png')"
 					mode="widthFix"></image>
 				<text>未开始</text>
 			</view>
 			<!-- 进行中 -->
 			<view class="line" v-else-if="detail.state == 1" :data-interviewId="detail.interviewId" @tap="goToDetail">
-				<image style="width: 17px;vertical-align: middle;margin-right:10px;" src="../../static/image/endTime.png"
+				<image style="width: 17px;vertical-align: middle;margin-right:10px;" :src="$getStaticFilePath('endTime.png')"
 					mode="widthFix"></image>
 				<text>进行中</text>
 			</view>
 			<!-- 已结束 -->
 			<view class="line" v-else-if="detail.state == 2">
-				<image style="width: 17px;vertical-align: middle;margin-right:10px;" src="../../static/image/hasEnd.png"
+				<image style="width: 17px;vertical-align: middle;margin-right:10px;" :src="$getStaticFilePath('hasEnd.png')"
 					mode="widthFix"></image>
 				<text>已结束</text>
 			</view>

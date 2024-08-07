@@ -1,4 +1,4 @@
-const baseUrl = 'http://47.120.73.35:8088/quanta/recruitment_reception/'
+const baseUrl = 'https://zx.quantacenter.com/recruitment_reception/'
 
 function service(options = {}) {
 	options.url = `${baseUrl}${options.url}`
@@ -25,6 +25,16 @@ function service(options = {}) {
 					title: `${res.data.msg}`
 				})
 				// 这里可以做一些状态码判断以及操作
+				if (res.data.code == 401) {
+					uni.showToast({
+						icon: 'none',
+						duration: 3000,
+						title: `${res.data.msg}` + '即将跳转登录页'
+					})
+					setTimeout(() => {
+						uni.navigateTo({ url: '/pages/login/login' })
+					}, 3000) // 延迟时间要与 showToast 的 duration 保持一致，确保在提示框显示完毕后执行跳转
+				}
 				// 返回错误信息
 				rejected(res)
 			} else {

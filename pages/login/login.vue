@@ -1,8 +1,16 @@
 <script setup>
 	import { NavigationFailureType } from 'vue-router'
+	import { getCurrentInstance } from 'vue'
 	import { request } from '../../utils/request.js'
 	var canIUseGetUserProfile = ref(false)
 	var code = ''
+	// const instance = getCurrentInstance()
+	// const getStaticFilePath = instance.appContext.config.globalProperties.$getStaticFilePath
+	const instance = getCurrentInstance()
+	if (!instance) {
+		throw new Error('getCurrentInstance must be called within setup or lifecycle hook.')
+	}
+	const getStaticFilePath = instance.appContext.config.globalProperties.$getStaticFilePath
 	onLoad(() => {
 		// 判断版本权限
 		if (uni.getUserProfile) {
@@ -158,17 +166,17 @@
 </script>
 
 <template>
-	<img id="loginBg" src="../../static/image/loginBackground.png" alt="" />
+	<img id="loginBg" :src="getStaticFilePath('loginBackground.png')" alt="" />
 	<view class="login">
 		<!-- <button class="loginButton" v-if="canIUseGetUserProfile" @tap="getUserProfile"> -->
 		<button class="loginButton" @tap="getUserProfile">
-			<img class="weixinLogo" src="../../static/image/weixinLogo.png" alt="" />
+			<img class="weixinLogo" :src="getStaticFilePath('weixinLogo.png')" alt="" />
 			<text class="loginText">微信登陆</text>
 		</button>
 
 		<!-- <button v-else open-type="getUserInfo" @getuserinfo="bindGetUserInfo">
 			登陆 -->
-		<!-- <img class="weixinLogo" src="../../static/image/weixinLogo.png" alt="" /> -->
+		<!-- <img class="weixinLogo" :src="getStaticFilePath('weixinLogo.png')" alt="" /> -->
 		<!-- </button> -->
 		<text></text>
 	</view>

@@ -1,1 +1,0 @@
-<view class="container data-v-4c1b26cf"><view wx:for="{{a}}" wx:for-item="item" wx:key="b" class="noticeLine data-v-4c1b26cf" data-id="{{item.b}}" bindtap="{{c}}"><text class="data-v-4c1b26cf">{{item.a}}</text></view></view>

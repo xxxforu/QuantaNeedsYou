@@ -1,132 +1,141 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		{
+	"pages": [{
 			"path": "pages/login/login",
 			"style": {
 				"navigationStyle": "custom"
 			}
-		}, {
+		},
+		{
 			"path": "pages/index/index",
 			"style": {
 				"navigationStyle": "custom"
-
 			}
 		},
 		{
 			"path": "pages/info/info",
 			"style": {
-				"navigationBarTitleText": ""
-			}
-		},
-		{
-			"path": "pages/tajiuzhaoni-HAIBAO/tajiuzhaoni-HAIBAO",
-			"style": {
-				"navigationBarTitleText": "塔就招你"
-			}
-		},
-		{
-			"path": "pages/yiqianweiding/yiqianweiding",
-			"style": {
-				"navigationBarTitleText": "一签为定"
-			}
-		},
-		{
-			"path": "pages/yiqianweiding-detail/yiqianweiding-detail",
-			"style": {
-				"navigationBarTitleText": "一签为定"
-			}
-		},
-		{
-			"path": "pages/wodejianli/wodejianli",
-			"style": {
-				"navigationBarTitleText": "我的简历"
-			}
-		},
-		{
-			"path": "pages/xinjianjianli/xinjianjianli",
-			"style": {
-				"navigationBarTitleText": ""
-			}
-		},
-		{
-			"path": "pages/toudijianli-index/toudijianli-index",
-			"style": {
-				"navigationBarTitleText": "塔就招你"
-			}
-		},
-		{
-			"path": "pages/tajiuzhaoni/tajiuzhaoni",
-			"style": {
-				"navigationBarTitleText": "塔就招你",
-				"enablePullDownRefresh": true
-			}
-
-		},
-		{
-			"path": "pages/profileDetail/profileDetail",
-			"style": {
-				"navigationBarTitleText": ""
-			}
-		},
-		{
-			"path": "api/login/login",
-			"style": {
-				"navigationBarTitleText": ""
-			}
-		}, {
-			"path": "pages/schduleIndex/schduleIndex",
-			"style": {
-				"navigationBarTitleText": "塔就招你"
-			}
-		},
-		{
-			"path": "pages/schduleDetail/schduleDetail",
-			"style": {
-				"navigationBarTitleText": "详情"
-			}
-		},
-		{
-			"path": "components/interviewDetail/interviewDetail/interviewDetail",
-			"style": {
-				"navigationBarTitleText": "详情"
-			}
-		},
-		{
-			"path": "pages/message/message",
-			"style": {
-				"navigationBarTitleText": "消息"
+				"navigationBarTitleText": "",
+				"navigationBarBackgroundColor": "#F9E6DA",
+				"navigationBarTextStyle": "black"
 			}
 		}
-
 	],
-	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F9E6DA",
-		"backgroundColor": "#F8F8F8",
-		"usingComponents": {
-			"van-toast": "/wxcomponents/vant/toast/index"
+	"subPackages": [{
+			"root": "sub-tajiuzhaoni",
+			"pages": [{
+					"path": "tajiuzhaoni/tajiuzhaoni",
+					"style": {
+						"navigationBarTitleText": "塔就招你",
+						"enablePullDownRefresh": true,
+						"navigationBarBackgroundColor": "#F9E6DA",
+						"navigationBarTextStyle": "black"
+					}
+				},
+				{
+					"path": "schduleDetail/schduleDetail",
+					"style": {
+						"navigationBarTitleText": "详情",
+						"navigationBarBackgroundColor": "#F9E6DA",
+						"navigationBarTextStyle": "black"
+					}
+				},
+
+				{
+					"path": "schduleIndex/schduleIndex",
+					"style": {
+						"navigationBarTitleText": "塔就招你",
+						"navigationBarBackgroundColor": "#F9E6DA",
+						"navigationBarTextStyle": "black"
+					}
+				}, {
+					"path": "tajiuzhaoni-HAIBAO/tajiuzhaoni-HAIBAO",
+					"style": {
+						"navigationBarTitleText": "塔就招你",
+						"navigationBarBackgroundColor": "#F9E6DA",
+						"navigationBarTextStyle": "black"
+					}
+				},
+				{
+					"path": "message/message",
+					"style": {
+						"navigationBarTitleText": "消息",
+						"navigationBarBackgroundColor": "#F9E6DA",
+						"navigationBarTextStyle": "black"
+					}
+				}
+			]
+
+		},
+		{
+			"root": "sub-yiqianweiding",
+			"pages": [{
+					"path": "yiqianweiding-detail/yiqianweiding-detail",
+					"style": {
+						"navigationBarTitleText": "一签为定",
+						"navigationBarBackgroundColor": "#F9E6DA",
+						"navigationBarTextStyle": "black"
+					}
+				},
+				{
+					"path": "yiqianweiding/yiqianweiding",
+					"style": {
+						"navigationBarTitleText": "一签为定",
+						"navigationBarBackgroundColor": "#F9E6DA",
+						"navigationBarTextStyle": "black"
+					}
+				}
+			]
+		},
+		{
+			"root": "sub-wodejianli",
+			"pages": [{
+				"path": "profileDetail/profileDetail",
+				"style": {
+					"navigationBarTitleText": "",
+					"navigationBarBackgroundColor": "#F9E6DA",
+					"navigationBarTextStyle": "black"
+				}
+			}, {
+				"path": "wodejianli/wodejianli",
+				"style": {
+					"navigationBarTitleText": "我的简历",
+					"navigationBarBackgroundColor": "#F9E6DA",
+					"navigationBarTextStyle": "black"
+				}
+			}]
 		}
-	},
-	"uniIdRouter": {},
-	"condition": { //模式配置，仅开发期间生效
-		"current": 1, //当前激活的模式(list 的索引项)
-		"list": [{
-			"name": "info", //模式名称
-			"path": "pages/info/info", //启动页面，必选
-			"query": "" //启动参数，在页面的onLoad函数里面得到
-		}, {
-			"name": "index",
-			"path": "pages/index/index"
-		}, {
-			"name": "tajiuzhaoniHaiBAo",
-			"path": "pages/tajiuzhaoni-HAIBAO/tajiuzhaoni-HAIBAO"
-		}, {
-			"name": "tajiuzhaoni",
-			"path": "pages/tajiuzhaoni/tajiuzhaoni"
-		}, {
-			"name": "profileDetail",
-			"path": "pages/profileDetail/profileDetail"
-		}]
+	]
+}
+
+
+"globalStyle": {
+	"navigationBarTextStyle": "black",
+	"navigationBarTitleText": "uni-app",
+	"navigationBarBackgroundColor": "#F9E6DA",
+	"backgroundColor": "#F8F8F8",
+	"usingComponents": {
+		"van-toast": "/wxcomponents/vant/toast/index"
 	}
+},
+"uniIdRouter": {},
+"condition": { //模式配置，仅开发期间生效
+	"current": 1, //当前激活的模式(list 的索引项)
+	"list": [{
+		"name": "info", //模式名称
+		"path": "pages/info/info", //启动页面，必选
+		"query": "" //启动参数，在页面的onLoad函数里面得到
+	}, {
+		"name": "index",
+		"path": "pages/index/index"
+	}, {
+		"name": "tajiuzhaoniHaiBAo",
+		"path": "pages/tajiuzhaoni-HAIBAO/tajiuzhaoni-HAIBAO"
+	}, {
+		"name": "tajiuzhaoni",
+		"path": "pages/tajiuzhaoni/tajiuzhaoni"
+	}, {
+		"name": "profileDetail",
+		"path": "pages/profileDetail/profileDetail"
+	}]
+}
 }

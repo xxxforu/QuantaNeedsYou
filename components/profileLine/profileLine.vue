@@ -1,7 +1,7 @@
 <template>
 	<view class="departmentLineBox" @click="chooseProfile">
 		<text>{{name}}</text>
-		<image src="../../static/image/返回.png" mode=""></image>
+		<image :src="$getStaticFilePath('back.png')" mode=""></image>
 	</view>
 </template>
 

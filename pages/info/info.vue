@@ -1,6 +1,12 @@
 <script setup>
 	import { request } from '../../utils/request.js'
 	import { onMounted, reactive } from 'vue'
+	import { getCurrentInstance } from 'vue'
+	const instance = getCurrentInstance()
+	if (!instance) {
+		throw new Error('getCurrentInstance must be called within setup or lifecycle hook.')
+	}
+	const getStaticFilePath = instance.appContext.config.globalProperties.$getStaticFilePath
 	// 学院列表 
 	var facultyList = ref([
 		'信息科学与技术学院',
@@ -107,19 +113,19 @@
 	<form id="infoForm">
 		<text id="title">验证</text>
 		<view class="formItem">
-			<img src="../../static/image/姓名.png" alt="icon" class="icon" />
+			<img :src="getStaticFilePath('name.png')" alt="icon" class="icon" />
 			<input class="inputBox" type="text" placeholder="姓名" v-model="formData.name" confirm-type="done"
 				@input="clearInputName" />
 			<uni-icons type="close" class="clearIcon" v-if="showClearIconName" @click="clearIconName" size="20"></uni-icons>
 		</view>
 		<view class="formItem">
-			<img src="../../static/image/学号.png" alt="icon" class="icon" />
+			<img :src="getStaticFilePath('stuNum.png')" alt="icon" class="icon" />
 			<input class="inputBox" type="text" placeholder="学号" v-model="formData.studentNum" confirm-type="done"
 				@input="clearInputNum" />
 			<uni-icons type="close" class="clearIcon" v-if="showClearIconNum" @click="clearIconNum" size="20"></uni-icons>
 		</view>
 		<view class="formItem">
-			<img src="../../static/image/学院.png" alt="icon" class="icon" />
+			<img :src="getStaticFilePath('college.png')" alt="icon" class="icon" />
 			<picker class="inputBox" mode="selector" :value="pickerIndex" :range="facultyList" @change="bindPickerChange">
 				<view>{{ facultyList[pickerIndex] }}</view>
 			</picker>
