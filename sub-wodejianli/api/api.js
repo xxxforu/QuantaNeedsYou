@@ -41,7 +41,8 @@ export function postResume(data) {
 export function getResumeList() {
 	return request({
 		url: 'resume/',
-		method: 'GET'
+		method: 'GET',
+		showLoading: false
 	})
 }
 /**

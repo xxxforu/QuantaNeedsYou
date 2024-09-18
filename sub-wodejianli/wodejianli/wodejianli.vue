@@ -1,7 +1,7 @@
 <template>
 	<view class="container" @tap="handlePageTap">
-		<!-- <text @tap.stop="handleTap">{{ isEditing ? editText : '双击我试试看呢' }}</text> -->
 		<view class="new" @click="newProfileDecideName">新建简历</view>
+
 		<view class="resumeListBox" v-for="(item, i) in resumeList" :key="item.resumeId" data-resumeId="item.resumeId">
 			<view class="normalBox" @click="goToDetail(item.resumeId,item.resumeName)" v-show="editingId !== item.resumeId">
 				{{item.resumeName}}
@@ -17,6 +17,10 @@
 				<uni-easyinput primaryColor="#fff" @tap.stop @blur="stopEditing(item.resumeId)" class="inputBox"
 					v-model="item.resumeName" trim maxlength="15" placeholder="输入新名称" />
 			</view>
+		</view>
+		<view v-if="!loading && resumeList.length == 0" class="emptyBox">
+			<image :src="getStaticFilePath('bin.png')" style="width: 35vw;" mode="widthFix"></image>
+			<text>空空如也~</text>
 		</view>
 	</view>
 	<!-- 简历删除弹窗 -->
@@ -41,8 +45,6 @@
 	}
 	const getStaticFilePath = instance.appContext.config.globalProperties.$getStaticFilePath
 	let touchNum = 0
-	let isEditing = ref(false)
-	let editText = ref('双击我试试看呢')
 	let resumeList = ref([])
 	let editingId = ref(null) // 当前正在编辑的 resumeId
 	let nameBeforeEdit = ref(null)
@@ -96,10 +98,13 @@
 
 	}
 
+	let loading = ref(true)
 	onShow(() => {
+		loading.value = true
 		getResumeList().then(res => {
 			console.log(res)
 			resumeList.value = res
+			loading.value = false
 		})
 	})
 
@@ -115,18 +120,7 @@
 		}
 	}
 
-	function handleTap() {
-		touchNum++
-		setTimeout(() => {
-			if (touchNum === 1) {
-				console.log('单击')
-			} else if (touchNum >= 2) {
-				console.log('双击')
-				isEditing.value = true // 双击时进入编辑状态
-			}
-			touchNum = 0
-		}, 250)
-	}
+
 
 	// 新建简历部分
 	var inputDialog = ref(null) //获取简历实例
@@ -215,5 +209,14 @@
 
 	.deletePopup>>>.uni-popup__info {
 		color: #ffa265;
+	}
+
+	.emptyBox {
+		display: flex;
+		width: 100%;
+		flex-direction: column;
+		height: 80%;
+		justify-content: center;
+		align-items: center;
 	}
 </style>

@@ -1,1 +1,38 @@
-"use strict";const e=require("../common/vendor.js"),i="https://zx.quantacenter.com/recruitment_reception/",s=n=>new Promise((o,a)=>{const r={"Content-Type":"application/json",Authorization:e.index.getStorageSync("token")!=null?e.index.getStorageSync("token"):null};e.index.request({url:i+n.url,method:n.method||"GET",data:JSON.stringify(n.data)||{},header:r,success(t){t.data.code==401&&(e.index.showToast({title:"请重新登录！",duration:1500,icon:"none"}),setTimeout(()=>{e.index.navigateTo({url:"/pages/login/login"})},1e3)),o(t.data)},fail:t=>{a(t)}})});exports.request=s;
+"use strict";
+const common_vendor = require("../common/vendor.js");
+const baseUrl = "https://qtzx.xdj666.top/quanta/recruitment_reception/";
+const request = (options) => {
+  return new Promise((resolve, reject) => {
+    const header = {
+      "Content-Type": "application/json",
+      Authorization: common_vendor.index.getStorageSync("token") != null ? common_vendor.index.getStorageSync("token") : null
+    };
+    common_vendor.index.request({
+      url: baseUrl + options.url,
+      //接收请求的API
+      method: options.method || "GET",
+      //接收请求的方式,如果不传默认为GET
+      data: JSON.stringify(options.data) || {},
+      //接收请求的data,不传默认为空
+      header,
+      //接收请求的header
+      success(res) {
+        if (res.data.code == 401) {
+          common_vendor.index.showToast({
+            title: "请重新登录！",
+            duration: 1500,
+            icon: "none"
+          });
+          setTimeout(() => {
+            common_vendor.index.navigateTo({ url: "/pages/login/login" });
+          }, 1e3);
+        }
+        resolve(res.data);
+      },
+      fail: (err) => {
+        reject(err);
+      }
+    });
+  });
+};
+exports.request = request;

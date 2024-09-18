@@ -1,9 +1,7 @@
 <template>
 	<view class="container">
 		<view class="tab" :style="{paddingTop: topBarHeight + 'px'}">
-			<image id="avatarUrl" :src="avatarUrl" mode="widthFix"></image>
-			<!-- <view id="avatarUrl" :style="{backgroundImage: 'url(' + avatarUrl + ')','background-repeat':'no-repeat', 
-			backgroundSize:'100% 100%'}"></view> -->
+			<image id="avatarUrl" :src="getStaticFilePath('quantaLogo.png')" mode="widthFix"></image>
 			<text class="userName">{{userName}}</text>
 			<view class="messageBox" @tap="goToMessage">
 				<uni-badge :customStyle="{background: '#64B3D4'}" class="uni-badge-left-margin" :text="unreadCount"
@@ -17,7 +15,7 @@
 			</view>
 		</view>
 		<view class=" content" :style="{paddingTop :topBarHeight +MenuButtonHeight+'px' }">
-			<navigator v-if="haveEnterTajiuzhaoni" url="/sub-tajiuzhaoni/tajiuzhaoni-HAIBAO/tajiuzhaoni-HAIBAO">
+			<navigator v-if="!haveEnterTajiuzhaoni" url="/sub-tajiuzhaoni/tajiuzhaoni-HAIBAO/tajiuzhaoni-HAIBAO">
 				<view class="navBox">
 					<view class="up">
 						<image class="navImg" :src="getStaticFilePath('tajiuzhaoni.png')" mode="widthFix"></image>
@@ -89,7 +87,6 @@
 	var topBarHeight = ref(0)
 	var haveEnterTajiuzhaoni = ref(false)
 	var MenuButtonHeight = ref(0)
-	var avatarUrl = ref(uni.getStorageSync('avatarUrl'))
 	var userName = ref(uni.getStorageSync('userName'))
 	var unreadCount = ref(0)
 	onLoad(() => {
@@ -99,22 +96,24 @@
 				MenuButtonHeight.value = uni.getMenuButtonBoundingClientRect().height
 			}
 		})
-		getUnreadCount().then(res => {
-			console.log(res)
-			unreadCount.value = res.unreadCount
-		})
+
 	})
 	// 跳转信息页
 	function goToMessage() {
 		uni.navigateTo({ url: '/sub-tajiuzhaoni/message/message' })
 	}
-	// 每次页面显示就要重新获取haveEnterTajiuzhaoni来判断跳转去那个塔就招你页面
+	// 每次页面显示就要重新获取haveEnterTajiuzhaoni来判断跳转去那个塔就招你页面和获取未读信息数
 	onShow(() => {
+		getUnreadCount().then(res => {
+			unreadCount.value = res.unreadCount
+		})
 		uni.getStorage({
 			key: 'haveEnterTajiuzhaoni',
-			success(res) {
-				haveEnterTajiuzhaoni.value = res.data
-				console.log(haveEnterTajiuzhaoni.value)
+			success() {
+				haveEnterTajiuzhaoni.value = true
+			},
+			fail() {
+				haveEnterTajiuzhaoni.value = false
 			}
 		})
 

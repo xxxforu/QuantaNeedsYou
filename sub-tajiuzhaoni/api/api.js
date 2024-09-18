@@ -18,7 +18,8 @@ export function department(query) {
 export function schedule(query) {
 	return request({
 		url: 'interview-record/schedule?' + objectToKeyValuePairs(query),
-		method: 'GET'
+		method: 'GET',
+
 	})
 }
 // 
@@ -28,7 +29,8 @@ export function schedule(query) {
 export function getResumeList() {
 	return request({
 		url: 'resume/',
-		method: 'GET'
+		method: 'GET',
+		showLoading: false
 	})
 }
 // 获取消息列表
@@ -38,4 +40,8 @@ export function getNoticeList() {
 // 获取未读消息数
 export function getNotice(id) {
 	return request({ url: 'interview-notice/' + id })
+}
+//获取塔就招你海报信息
+export function getHaiBao() {
+	return request({ url: 'recruitment' })
 }

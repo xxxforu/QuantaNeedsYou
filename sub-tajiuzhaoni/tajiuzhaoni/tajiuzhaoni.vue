@@ -22,35 +22,18 @@
 		message.value.open()
 	}
 	var departmentList = ref([])
-	// 获取未投递列表请求
-	// var departmentList = ref([{
-	// 		'departmentId': 1001,
-	// 		'name': '产品部'
-	// 	},
-	// 	{
-	// 		'departmentId': 1002,
-	// 		'name': '设计部'
-	// 	},
-	// 	{
-	// 		'departmentId': 1003,
-	// 		'name': '研发部前端方向'
-	// 	},
-	// 	{
-	// 		'departmentId': 1004,
-	// 		'name': '研发部安卓方向'
-	// 	},
-	// 	{
-	// 		'departmentId': 1005,
-	// 		'name': '研发部后端方向'
-	// 	}
-	// ])
 	var profileList = ref([])
 
 	function getDepartment(isRefresh, hasSubmitted) {
 		isNotDeliver.value = !hasSubmitted
 		department({ hasSubmitted: hasSubmitted }).then(res => {
 			console.log(res)
-			if (!hasSubmitted && res != []) {
+			// 未投递的列表
+			if (!hasSubmitted && res.length === 0) {
+				departmentEmpty.value = true
+			}
+			// 已投递的列表
+			if (hasSubmitted && res.length) {
 				deliveryEmpty.value = false
 			}
 			departmentList.value = res
@@ -68,13 +51,15 @@
 	onPullDownRefresh(() => {
 		getDepartment(true, !isNotDeliver.value)
 	})
+	onShow(() => {
+		getDepartment(false, false)
+	})
 	onLoad(() => {
-		getDepartment(true, false)
 		uni.setStorage({
 			key: 'haveEnterTajiuzhaoni',
-			data: false
+			data: true
 		})
-		getProfileList(true)
+		getProfileList()
 	})
 	onReady(() => {
 		//.box获取class为box的元素，如果使用的id= 'box' 则使用'#box'
@@ -98,6 +83,7 @@
 
 
 	function deliverProfile(id) {
+		getProfileList()
 		chooseDepartmentId = id
 		if (profileList.value.length != 0) {
 			openProfile.value.open('center')
@@ -123,7 +109,11 @@
 			return
 		}
 		inputClose.value.val = ''
-		uni.navigateTo({ url: '/sub-wodejianli/profileDetail/profileDetail?name=' + val + '&from=1' })
+		openProfile.value.close()
+		uni.navigateTo({
+			url: '/sub-wodejianli/profileDetail/profileDetail?name=' + val + '&from=1' + '&departmentId=' +
+				chooseDepartmentId
+		})
 
 		inputDialog.value.close()
 	}
@@ -131,6 +121,7 @@
 	function chooseProfile(name, id) {
 		// 跳转简历详情页
 		console.log(name)
+		openProfile.value.close()
 		uni.navigateTo({
 			url: '/sub-wodejianli/profileDetail/profileDetail?name=' + name + '&departmentId=' +
 				chooseDepartmentId + '&resumeId=' + id + '&from=1'

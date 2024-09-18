@@ -1,1 +1,39 @@
-"use strict";const u=require("../../utils/newRequest.js");function r(e){return u.service({url:"resume/"+e,method:"DELETE"})}function s(){return u.service({url:"resume/",method:"GET"})}function m(e){return u.service({url:"resume/"+e,method:"GET"})}function n(e,t){return u.service({url:"resume/"+e+"/name?name="+t,method:"PUT"})}function i(e){return u.service({url:"submit",method:"POST",data:e})}exports.ChangeResumeName=n;exports.deleteResume=r;exports.getResumeDetail=m;exports.getResumeList=s;exports.submit=i;
+"use strict";
+const utils_newRequest = require("../../utils/newRequest.js");
+function deleteResume(resumeId) {
+  return utils_newRequest.service({
+    url: "resume/" + resumeId,
+    method: "DELETE"
+  });
+}
+function getResumeList() {
+  return utils_newRequest.service({
+    url: "resume/",
+    method: "GET",
+    showLoading: false
+  });
+}
+function getResumeDetail(resumeId) {
+  return utils_newRequest.service({
+    url: "resume/" + resumeId,
+    method: "GET"
+  });
+}
+function ChangeResumeName(resumeId, name) {
+  return utils_newRequest.service({
+    url: "resume/" + resumeId + "/name?name=" + name,
+    method: "PUT"
+  });
+}
+function submit(data) {
+  return utils_newRequest.service({
+    url: "submit",
+    method: "POST",
+    data
+  });
+}
+exports.ChangeResumeName = ChangeResumeName;
+exports.deleteResume = deleteResume;
+exports.getResumeDetail = getResumeDetail;
+exports.getResumeList = getResumeList;
+exports.submit = submit;

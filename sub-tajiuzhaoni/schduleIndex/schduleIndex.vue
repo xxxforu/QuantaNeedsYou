@@ -8,11 +8,13 @@
 	const getStaticFilePath = instance.appContext.config.globalProperties.$getStaticFilePath
 	var interviewRecordListDtos = ref()
 	var lastIndex = ref()
+	var departmentName = ref('')
 	onLoad(option => {
 		console.log(option.id)
 		schedule({ department_id: option.id }).then(res => {
 			// 拿到res后要给到interviewRecordListDtos
-			console.log(res)
+			console.log(res.departmentName)
+			departmentName.value = res.departmentName
 			interviewRecordListDtos.value = res.interviewRecordListDtos
 			lastIndex.value = interviewRecordListDtos.value.length - 1
 		})
@@ -32,7 +34,7 @@
 			<image :src="getStaticFilePath('scheduleBanner.png')" mode="widthFix" style="width: 90vw;margin: 5vw;"></image>
 		</view>
 		<view class="content">
-			<text id="title">投递部门：<span>{{departmentName}}</span></text>
+			<text id="title">投递部门：{{departmentName}}</text>
 			<text style="font-weight: bold;font-size: 15px;margin: 10px 0 5px;display: block;">当前进度</text>
 			<!-- 投递简历轮，固定样式 -->
 			<view id="zeroRound">
@@ -44,7 +46,7 @@
 				<image v-if="item.result == 2" class="roundIcon" :src="getStaticFilePath('pass.png')" mode="widthFix"></image>
 				<image v-else-if="item.result == 1" class="roundIcon" :src="getStaticFilePath('unpass.png')" mode="widthFix">
 				</image>
-				<image v-else-if="item.result === null" class="roundIcon" :src="getStaticFilePath('end.png')" mode="widthFix">
+				<image v-else class="roundIcon" :src="getStaticFilePath('end.png')" mode="widthFix">
 				</image>
 				<image v-if="item.result == 2" class="line" :src="getStaticFilePath('solidLine.png')" mode="widthFix"></image>
 				<image v-else class="line" :src="getStaticFilePath('dotLine.png')" mode="widthFix"></image>

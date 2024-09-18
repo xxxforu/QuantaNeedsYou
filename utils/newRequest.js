@@ -1,4 +1,4 @@
-const baseUrl = 'https://zx.quantacenter.com/recruitment_reception/'
+const baseUrl = 'https://qtzx.xdj666.top/quanta/recruitment_reception/'
 
 function service(options = {}) {
 	options.url = `${baseUrl}${options.url}`
@@ -8,14 +8,20 @@ function service(options = {}) {
 		'content-type': 'application/json',
 		'Authorization': `${token || false}` // 这里是token(可自行修改)
 	}
-	// 显示加载框
-	uni.showLoading({ title: '加载中' })
+	console.log(options)
 
+	// 判断是否显示加载框，默认显示
+	if (options.showLoading !== false) {
+		uni.showLoading({ title: '加载中' })
+	}
 
-	// resolved是返回成功数据，rejected返回错误数据
+	// resolved 是返回成功数据，rejected 返回错误数据
 	return new Promise((resolved, rejected) => {
 		options.success = res => {
-			uni.hideLoading()
+			// 隐藏加载框
+			if (options.showLoading !== false) {
+				uni.hideLoading()
+			}
 			// 如果请求回来的状态码不是200则执行以下操作
 			if (res.data.code !== 200) {
 				// 非成功状态码弹窗
@@ -25,11 +31,12 @@ function service(options = {}) {
 					title: `${res.data.msg}`
 				})
 				// 这里可以做一些状态码判断以及操作
+				//options.url !== 'https://zx.quantacenter.com/recruitment_reception/interview-notice/unread/count' &&
 				if (res.data.code == 401) {
 					uni.showToast({
 						icon: 'none',
 						duration: 3000,
-						title: `${res.data.msg}` + '即将跳转登录页'
+						title: `${res.data.msg}` + '，即将跳转登录页'
 					})
 					setTimeout(() => {
 						uni.navigateTo({ url: '/pages/login/login' })
@@ -43,7 +50,10 @@ function service(options = {}) {
 			}
 		}
 		options.fail = err => {
-			uni.hideLoading()
+			// 隐藏加载框
+			if (options.showLoading !== false) {
+				uni.hideLoading()
+			}
 			// 请求失败弹窗
 			uni.showToast({
 				icon: 'none',

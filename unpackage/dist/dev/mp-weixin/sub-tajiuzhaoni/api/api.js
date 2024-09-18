@@ -1,1 +1,39 @@
-"use strict";const t=require("../../utils/newRequest.js");function i(e){return Object.keys(e).map(r=>`${r}=${e[r]}`).join("&")}function n(e){return t.service({url:"department?"+i(e),method:"GET"})}function u(e){return t.service({url:"interview-record/schedule?"+i(e),method:"GET"})}function c(){return t.service({url:"resume/",method:"GET"})}function s(){return t.service({url:"interview-notice"})}function o(e){return t.service({url:"interview-notice/"+e})}exports.department=n;exports.getNotice=o;exports.getNoticeList=s;exports.getResumeList=c;exports.schedule=u;
+"use strict";
+const utils_newRequest = require("../../utils/newRequest.js");
+function objectToKeyValuePairs(obj) {
+  return Object.keys(obj).map((key) => `${key}=${obj[key]}`).join("&");
+}
+function department(query) {
+  return utils_newRequest.service({
+    url: "department?" + objectToKeyValuePairs(query),
+    method: "GET"
+  });
+}
+function schedule(query) {
+  return utils_newRequest.service({
+    url: "interview-record/schedule?" + objectToKeyValuePairs(query),
+    method: "GET"
+  });
+}
+function getResumeList() {
+  return utils_newRequest.service({
+    url: "resume/",
+    method: "GET",
+    showLoading: false
+  });
+}
+function getNoticeList() {
+  return utils_newRequest.service({ url: "interview-notice" });
+}
+function getNotice(id) {
+  return utils_newRequest.service({ url: "interview-notice/" + id });
+}
+function getHaiBao() {
+  return utils_newRequest.service({ url: "recruitment" });
+}
+exports.department = department;
+exports.getHaiBao = getHaiBao;
+exports.getNotice = getNotice;
+exports.getNoticeList = getNoticeList;
+exports.getResumeList = getResumeList;
+exports.schedule = schedule;

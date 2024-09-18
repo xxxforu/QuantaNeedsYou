@@ -1,25 +1,37 @@
 <script setup>
-	import { getCurrentInstance } from 'vue'
+	import { getHaiBao } from '../api/api.js'
+	import { getCurrentInstance, onMounted } from 'vue'
+	var data = ref({})
+	onMounted(() => {
+		getHaiBao().then(res => {
+			data.value = res
+			// 如果已结束 直接去到投递页
+			if (data.value.state == 2) {
+				uni.navigateTo({ url: '/sub-tajiuzhaoni/tajiuzhaoni/tajiuzhaoni' })
+			}
+		})
+	})
 	const instance = getCurrentInstance()
 	if (!instance) {
 		throw new Error('getCurrentInstance must be called within setup or lifecycle hook.')
 	}
 	const getStaticFilePath = instance.appContext.config.globalProperties.$getStaticFilePath
+
+	function goToPage() {
+		uni.navigateTo({ url: '/sub-tajiuzhaoni/tajiuzhaoni/tajiuzhaoni' })
+	}
 </script>
 
 <template>
 	<view class="container">
 		<view class="imageBox">
-			<image :src="getStaticFilePath('tajiuzhaoni.png')" mode="widthFix"></image>
+			<image :src="data.image || getStaticFilePath('tajiuzhaoni.png')" mode="widthFix"></image>
 		</view>
 		<view class="textBox">
-			<text>文字</text>
-			<text>文字</text>
-			<text>文字</text>
+			<text>{{data.recruitmentContent}}</text>
 		</view>
-		<navigator url="/sub-tajiuzhaoni/tajiuzhaoni/tajiuzhaoni">
-			<button id="deliverButton">投递简历</button>
-		</navigator>
+		<button v-if="data.state !=  1" type="default" disabled>投递简历</button>
+		<button v-else id="deliverButton" @click="goToPage()">投递简历</button>
 
 	</view>
 </template>
@@ -42,6 +54,8 @@
 
 	.imageBox image {
 		width: 90%;
+		margin: auto;
+		display: block;
 	}
 
 	#deliverButton {
@@ -52,5 +66,14 @@
 		width: 125px;
 		height: 50px;
 		box-shadow: 0 3px 8px 0 rgba(50, 49, 49, 0.06);
+	}
+
+	.textBox {
+		width: 80vw;
+		box-sizing: border-box;
+		background-color: #fff;
+		padding: 17px;
+		box-shadow: 0 3px 8px 0 rgba(50, 49, 49, 0.06);
+		border-radius: 15px;
 	}
 </style>

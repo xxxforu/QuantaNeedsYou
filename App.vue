@@ -1,17 +1,50 @@
 <script>
 	export default {
 		onLaunch: function() {
-			// uni.checkSession({
-			//     success(){
-			//         //session_key 未过期，并且在本生命周期一直有效
-			// 		uni.navigateTo({
-			// 			url:'/pages/index/index'
-			// 		})
-			//     },
-			//     fail(){
-			//          // session_key 已经失效，需要重新执行登录流程
+			/**
+			 * 检测当前的小程序
+			 * 是否是最新版本，是否需要下载、更新
+			 */
+			//判断微信版本是否 兼容小程序更新机制API的使用
+			const updateManager = uni.getUpdateManager()
+			//检测版本更新
+			updateManager.onCheckForUpdate(function(res) {
+				if (res.hasUpdate) {
+					updateManager.onUpdateReady(function() {
+						uni.showModal({
+							title: '温馨提示',
+							content: '检测到新版本，是否重启小程序？',
+							showCancel: false,
+							success: function(res) {
+								if (res.confirm) {
+									// 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
+									updateManager.applyUpdate()
+								}
+							}
+						})
+					})
+					updateManager.onUpdateFailed(function() {
+						// 新版本下载失败
+						uni.showModal({
+							title: '已有新版本',
+							content: '请您删除小程序，重新搜索进入',
+						})
+					})
+				}
+			})
 
-			//     }
+			// uni.checkSession({
+			// 	success() {
+			// 		console.log('>>>>>>>>>>>>>>>>>>>已登录')
+			// 		uni.navigateTo({ url: '/pages/index/index' })
+			// 	},
+			// 	fail() {
+			// 		// session_key 已经失效，需要重新执行登录流程
+			// 		setTimeout(() => {
+			// 			uni.navigateTo({ url: '/pages/login/login' })
+			// 		}, 3000) 
+			// 		// uni.navigateTo({ url: '/pages/login/login' })
+			// 	}
 			// })
 		},
 		onShow: function() {

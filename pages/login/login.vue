@@ -4,8 +4,6 @@
 	import { request } from '../../utils/request.js'
 	var canIUseGetUserProfile = ref(false)
 	var code = ''
-	// const instance = getCurrentInstance()
-	// const getStaticFilePath = instance.appContext.config.globalProperties.$getStaticFilePath
 	const instance = getCurrentInstance()
 	if (!instance) {
 		throw new Error('getCurrentInstance must be called within setup or lifecycle hook.')
@@ -27,7 +25,6 @@
 
 		//2、真正执行的函数
 		const _debounce = () => {
-			console.log('222')
 			//取消上一次的定时器
 			if (timer) clearTimeout(timer)
 			//判断是否需要立即执行
@@ -74,31 +71,37 @@
 					data: res.data.grade,
 					key: 'grade'
 				})
-				uni.getStorage({
-					// 看有没有进入过“塔就招你”的海报页
-					key: 'haveEnterTajiuzhaoni',
-					success() {
-						// 进入过
-						console.log('getSuccess')
-					},
-					fail() {
-						// 未进入
-						uni.setStorage({
-							data: true,
-							key: 'haveEnterTajiuzhaoni'
-						})
-					}
-				})
+				// uni.getStorageSync({
+				// 	// 看有没有进入过“塔就招你”的海报页
+				// 	key: 'haveEnterTajiuzhaoni',
+				// 	success() {
+				// 		// 进入过
+				// 		console.log('getSuccess')
+				// 	},
+				// 	fail() {
+				// 		// 未进入
+				// 		uni.setStorage({
+				// 			data: true,
+				// 			key: 'haveEnterTajiuzhaoni'
+				// 		})
+				// 	}
+				// })
 				uni.navigateTo({ url: '/pages/index/index' })
 			}
 			// 未绑定 去info页进行信息绑定 记录下openId
-			else if (res.code == 405) {
+			else if (res.code == 405 && res.data) {
 				// uni.$showMsg(res.msg)
 				uni.setStorage({
 					data: res.data,
 					key: 'openId',
 				})
 				uni.navigateTo({ url: '/pages/info/info' })
+			} else if (res.code == 405 && !res.data) {
+				uni.showToast({
+					icon: 'none',
+					duration: 3000,
+					title: `${res.msg}`
+				})
 			} else {
 				uni.showToast({
 					icon: 'none',
@@ -113,6 +116,8 @@
 
 	function getUserProfile() {
 		uni.login({
+			'provider': 'weixin',
+			'onlyAuthorize': true, // 微信登录仅请求授权认证
 			success: function(res) {
 				console.log(res.code)
 				if (res.code) {
@@ -121,63 +126,18 @@
 				}
 			}
 		})
-		// uni.getUserProfile({
-		// 	lang: 'zh_CN',
-		// 	desc: '用户登录', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，
-		// 	success: res => {
-		// 		console.log(res.userInfo)
-		// 		console.log(res.errMsg)
-		// 		uni.setStorage({
-		// 			data: res.userInfo.avatarUrl,
-		// 			key: 'avatarUrl'
-		// 		})
-
-		// 	},
-		// 	fail(err) {
-		// 		console.log(err)
-		// 	}
-		// })
 	}
-
 
 	var debounceGetUseProfile = debounce(getUserProfile, 1500)
-
-	function bindGetUserInfo() {
-		return new Promise((resolve, reject) => {
-			uni.getUserInfo({
-				lang: 'zh_CN',
-				success: res => {
-					uni.login({
-						success: function(res) {
-							if (res.code) {
-								code = res.code
-								weixinLogin()
-							}
-						}
-					})
-					resolve(res.userInfo)
-				},
-				fail: err => {
-					reject(err)
-				}
-			})
-		})
-	}
 </script>
 
 <template>
 	<img id="loginBg" :src="getStaticFilePath('loginBackground.png')" alt="" />
 	<view class="login">
-		<!-- <button class="loginButton" v-if="canIUseGetUserProfile" @tap="getUserProfile"> -->
-		<button class="loginButton" @tap="getUserProfile">
+		<button class="loginButton" @tap="debounceGetUseProfile">
 			<img class="weixinLogo" :src="getStaticFilePath('weixinLogo.png')" alt="" />
 			<text class="loginText">微信登陆</text>
 		</button>
-
-		<!-- <button v-else open-type="getUserInfo" @getuserinfo="bindGetUserInfo">
-			登陆 -->
-		<!-- <img class="weixinLogo" :src="getStaticFilePath('weixinLogo.png')" alt="" /> -->
-		<!-- </button> -->
 		<text></text>
 	</view>
 </template>
@@ -213,7 +173,7 @@
 
 	#loginBg {
 		display: block;
-		width: 95%;
+		width: 100%;
 		margin: 20vh auto;
 	}
 

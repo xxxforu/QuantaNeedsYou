@@ -1,1 +1,25 @@
-"use strict";const e=require("../../common/vendor.js"),c={name:"profileLine",props:{name:{type:String},id:{type:Number}},methods:{chooseProfile(){this.$emit("chooseProfile",this.name,this.id)}}};function i(t,a,n,m,h,o){return{a:e.t(n.name),b:t.$getStaticFilePath("back.png"),c:e.o((...r)=>o.chooseProfile&&o.chooseProfile(...r))}}const s=e._export_sfc(c,[["render",i]]);wx.createComponent(s);
+"use strict";
+const common_vendor = require("../../common/vendor.js");
+const _sfc_main = {
+  name: "profileLine",
+  props: {
+    name: { type: String },
+    //resumeName
+    id: { type: Number }
+    //resumeId
+  },
+  methods: {
+    chooseProfile() {
+      this.$emit("chooseProfile", this.name, this.id);
+    }
+  }
+};
+function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+  return {
+    a: common_vendor.t($props.name),
+    b: _ctx.$getStaticFilePath("back.png"),
+    c: common_vendor.o((...args) => $options.chooseProfile && $options.chooseProfile(...args))
+  };
+}
+const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render]]);
+wx.createComponent(Component);

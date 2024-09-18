@@ -61,7 +61,7 @@
 					data: formData.value.name,
 					key: 'name'
 				})
-				uni.navigateTo({ url: '/pages/index/index' })
+				uni.navigateTo({ url: '/pages/login/login' })
 			}
 		})
 	}

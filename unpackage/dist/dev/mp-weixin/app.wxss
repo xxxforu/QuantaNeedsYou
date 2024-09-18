@@ -1,2 +1,17 @@
-.myButton{background-color:#ffa265;color:#fff;font-size:13px;font-weight:700;border-radius:10px;padding:3px 35px}.container{box-sizing:border-box;color:#707070;height:100vh;background-color:#f9f8f8}
+
+	/*每个页面公共css */
+.myButton {
+		background-color: #ffa265;
+		color: #fff;
+		font-size: 13px;
+		font-weight: bold;
+		border-radius: 10px;
+		padding: 3px 35px;
+}
+.container {
+		box-sizing: border-box;
+		color: #707070;
+		height: 100vh;
+		background-color: #f9f8f8;
+}
 page{--status-bar-height:25px;--top-window-height:0px;--window-top:0px;--window-bottom:0px;--window-left:0px;--window-right:0px;--window-magin:0px}[data-c-h="true"]{display: none !important;}

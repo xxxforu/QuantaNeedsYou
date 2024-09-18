@@ -3,8 +3,12 @@
 	var profileData = ref({})
 	var from = ref() //值为数字1 2 3 分别代表进来本页面的父页面是“塔就招你”，“我的简历-修改”和“我的简历-创建”
 	var resumeId = ref()
+	let message = ref(null)
+	let type = ref('success')
+	let msg = ref('修改成功！')
 	// 选择部门相关
 	var pickerIndex = ref(0)
+	let isLoading = false
 	var facultyList = ref([
 		'信息科学与技术学院',
 		'东方语言文化学院',
@@ -44,17 +48,17 @@
 		text: '女',
 		value: 1
 	}])
+	var currentDpm = 0
 	onLoad(option => {
 		console.log(option)
 		from.value = option.from
 		uni.setNavigationBarTitle({ title: option.name })
+		profileData.value.resumeName = option.name
 		if (option.resumeId) { //如果是现有的简历 则获取其数据
-
 			resumeId.value = option.resumeId
 			getResumeDetail(option.resumeId).then(res => {
 				profileData.value = res
 				if (profileData.value.others.includes('Undefined')) {
-					console.log('为空')
 					profileData.value.others = ''
 				}
 				// 必须要按照此格式才可以回显头像！
@@ -63,22 +67,22 @@
 					'extname': 'image',
 					'url': profileData.value.image
 				}]
-				console.log(res)
 			})
 
 		} else {
 			fileList.value.url = uni.getStorageSync('avatarUrl')
-			profileData.value.name = uni.getStorageSync('userName')
-			profileData.value.faculty = uni.getStorageSync('faculty')
-			profileData.value.grade = uni.getStorageSync('grade')
-			profileData.value.studentNum = uni.getStorageSync('studentNum')
+
 		}
+		profileData.value.name = uni.getStorageSync('userName')
+		profileData.value.faculty = uni.getStorageSync('faculty')
+		profileData.value.grade = uni.getStorageSync('grade')
+		profileData.value.studentNum = uni.getStorageSync('studentNum')
 		if (option.departmentId) {
 			profileData.value.department = option.departmentId
+			currentDpm = option.departmentId
 		}
-		if (option.name) {
-			profileData.value.name = option.name
-		}
+
+		console.log(currentDpm)
 	})
 
 	// 是否保存到“我的简历”胶囊按钮改变事件
@@ -120,27 +124,74 @@
 		// if (!profileData.value.others || profileData.value.others.length == 0) return false //others非必须
 		return true
 	}
+	//校验手机号码和邮箱
+	function regCheck() {
+		var phoneReg = /^1[3456789]\d{9}$/
+		var emailReg = /^([a-zA-Z0-9_]-*\.*)+@([a-zA-Z0-9_]-?)+(\.[a-zA-Z]{2,3}){1,2}$/
+
+		if (phoneReg.test(profileData.value.phone) && emailReg.test(profileData.value.email)) {
+			return '合法'
+		} else if (!phoneReg.test(profileData.value.phone)) {
+			return '手机号格式错误！'
+		} else if (!emailReg.test(profileData.value.email)) {
+			return '验邮箱格式错误！'
+		}
+
+	}
+
+	//提交简历
+	function handleSubmit() {
+		submit({
+			resumeId: resumeId.value - 0,
+			departmentId: currentDpm - 0
+		}).then(res => {
+			msg.value = '提交成功！'
+			message.value.open()
+			setTimeout(() => {
+				uni.navigateBack()
+			}, 2000)
+		})
+	}
 	// 修改简历
 	function changeResume() {
+		if (isLoading) return Promise.reject('isLoading')
+		if (!checkProfileData()) {
+			uni.showToast({
+				title: '请完整填写简历！',
+				icon: 'error'
+			})
+			return Promise.reject('Incomplete profile data')
+		}
+		let checkMsg = regCheck()
+		if (checkMsg !== '合法') {
+			uni.showToast({
+				title: checkMsg,
+				icon: 'error'
+			})
+			return Promise.reject(checkMsg)
+		}
 		return new Promise((resolve, reject) => {
+			isLoading = true
 			uni.uploadFile({
-				url: 'https://zx.quantacenter.com/recruitment_reception/resume/' + resumeId.value,
+				url: 'https://qtzx.xdj666.top/quanta/recruitment_reception/resume/' + resumeId.value,
 				filePath: profileData.value.image,
 				name: 'image',
 				formData: {
 					'sex': profileData.value.sex,
-					'department_id': profileData.value.department,
+					'department_id': currentDpm,
 					'email': profileData.value.email,
 					'phone': profileData.value.phone,
 					'skill_advantages': profileData.value.skillsAdvantages,
-					'others': profileData.value.others
+					'others': profileData.value.others || ''
 				},
 				method: 'POST',
 				header: { 'Authorization': uni.getStorageSync('token') },
 				success(res) {
 					resolve(res)
+					isLoading = false
 				},
 				fail(err) {
+					isLoading = false
 					console.log(err)
 					reject(err)
 				}
@@ -150,26 +201,43 @@
 
 	// 新建简历
 	function newResume() {
+		if (!checkProfileData()) {
+			uni.showToast({
+				title: '请完整填写简历！',
+				icon: 'error'
+			})
+			return Promise.reject('Incomplete profile data')
+		}
+		let checkMsg = regCheck()
+		if (checkMsg !== '合法') {
+			uni.showToast({
+				title: checkMsg,
+				icon: 'error'
+			})
+			return Promise.reject(checkMsg)
+		}
 		return new Promise((resolve, reject) => {
-
 			uni.uploadFile({
-				url: 'https://zx.quantacenter.com/recruitment_reception/resume',
+				url: 'https://qtzx.xdj666.top/quanta/recruitment_reception/resume',
 				filePath: profileData.value.image,
 				name: 'image',
 				formData: {
 					'sex': profileData.value.sex,
-					'department_id': profileData.value.department,
+					'department_id': currentDpm,
 					'email': profileData.value.email,
 					'skill_advantages': profileData.value.skillsAdvantages,
-					'others': profileData.value.others,
+					'others': profileData.value.others || '',
 					'phone': profileData.value.phone,
-					'name': profileData.value.name,
+					'name': profileData.value.resumeName,
 					'save': save,
 				},
 				method: 'POST',
 				header: { 'Authorization': uni.getStorageSync('token') },
 				success(result) {
+					console.log(currentDpm)
+					console.log(result)
 					let res = JSON.parse(result.data).data
+
 					if (res) {
 						resolve(res.resumeId)
 					}
@@ -186,23 +254,36 @@
 	var msgType = 'info'
 	// 提交简历
 	function submitResume(resumeID, department) {
-		if (resumeId.value && save) {
-			if (!hasChoose) {
+		if (!checkProfileData()) {
+			uni.showToast({
+				title: '请完整填写简历！',
+				icon: 'error'
+			})
+			return Promise.reject('Incomplete profile data')
+		}
+		let checkMsg = regCheck()
+		if (checkMsg !== '合法') {
+			uni.showToast({
+				title: checkMsg,
+				icon: 'error'
+			})
+			return Promise.reject(checkMsg)
+		}
+		if (resumeId.value && save) { //已有简历并且要保存
+			if (!hasChoose) { //没有选择图片就要先下载
+				isLoading = true
 				uni.downloadFile({
 					url: profileData.value.image,
 					success(res) {
 						console.log(res)
+						isLoading = false
 						profileData.value.image = res.tempFilePath
 						changeResume().then(res => { //成功更新了就上传
-							submit({
-								resumeId: resumeId.value,
-								departmentId: profileData.value.department
-							}).then(res => {
-								console.log(res)
-							})
+							handleSubmit()
 						})
 					},
 					fail() {
+						isLoading = false
 						uni.showToast({
 							icon: 'none',
 							duration: 3000,
@@ -212,33 +293,18 @@
 				})
 			} else {
 				changeResume().then(res => { //成功更新了就上传
-					submit({
-						resumeId: resumeId.value,
-						departmentId: profileData.value.department
-					}).then(res => {
-						console.log(res)
-					})
+					handleSubmit()
 				})
 			}
 
-		} else if (!resumeId.value) {
+		} else if (!resumeId.value) { //新建简历
 			newResume().then(newResumeId => {
 				console.log(newResumeId) // 拿到newResumeId 再去submit
 				resumeId.value = newResumeId
-				submit({
-					resumeId: resumeId.value,
-					departmentId: profileData.value.department
-				}).then(res => {
-					console.log(res)
-				})
+				handleSubmit()
 			})
 		} else {
-			submit({
-				resumeId: resumeId.value,
-				departmentId: profileData.value.department
-			}).then(res => {
-				console.log(res)
-			})
+			handleSubmit()
 		}
 
 	}
@@ -250,7 +316,15 @@
 				title: '请完整填写简历！',
 				icon: 'error'
 			})
-			return
+			return Promise.reject('Incomplete profile data')
+		}
+		let checkMsg = regCheck()
+		if (checkMsg !== '合法') {
+			uni.showToast({
+				title: checkMsg,
+				icon: 'error'
+			})
+			return Promise.reject(checkMsg)
 		}
 		alertDialog.value.open()
 		// 先判断是否为新建的简历
@@ -273,26 +347,34 @@
 		// 	})
 		// }
 	}
-	let message = ref(null)
-	let type = ref('success')
-	let msg = ref('修改成功！')
+
+
+
 
 	function completeChange() {
+		if (isLoading) return
 		if (!hasChoose) {
+			isLoading = true
 			uni.downloadFile({
 				url: profileData.value.image,
 				success(res) {
+					isLoading = false
 					profileData.value.image = res.tempFilePath
 					changeResume().then(res => {
 						if (JSON.parse(res.data).code) {
+							msg.value = '修改成功！'
 							message.value.open()
 							setTimeout(() => {
 								uni.navigateBack()
-							}, 2000)
+							}, 1000)
 						}
+					}).catch(err => {
+						console.log(err)
+						isLoading = false
 					})
 				},
 				fail() {
+					isLoading = false
 					uni.showToast({
 						icon: 'none',
 						duration: 3000,
@@ -311,22 +393,43 @@
 	}
 
 	function createProfile() {
+		if (isLoading) return Promise.reject('isLoading')
+		if (!checkProfileData()) {
+			uni.showToast({
+				title: '请完整填写简历！',
+				icon: 'error'
+			})
+			return Promise.reject('请完整检查简历')
+		}
+		let checkMsg = regCheck()
+		if (checkMsg !== '合法') {
+			uni.showToast({
+				title: checkMsg,
+				icon: 'error'
+			})
+			return Promise.reject(checkMsg)
+		}
+		isLoading = true
+		uni.showLoading({ title: '加载中' })
+		console.log(profileData.value.others || '')
 		uni.uploadFile({
-			url: 'https://zx.quantacenter.com/recruitment_reception/resume',
+			url: 'https://qtzx.xdj666.top/quanta/recruitment_reception/resume',
 			filePath: profileData.value.image,
 			name: 'image',
 			formData: {
 				'sex': profileData.value.sex,
 				'email': profileData.value.email,
 				'skill_advantages': profileData.value.skillsAdvantages,
-				'others': profileData.value.others,
+				'others': profileData.value.others || '',
 				'phone': profileData.value.phone,
-				'name': profileData.value.name,
+				'name': profileData.value.resumeName,
 				'save': 1,
 			},
 			method: 'POST',
 			header: { 'Authorization': uni.getStorageSync('token') },
 			success(result) {
+				isLoading = false
+				uni.hideLoading()
 				let res = JSON.parse(result.data)
 				if (res.code == 200) {
 					msg.value = '创建成功！'
@@ -337,7 +440,9 @@
 				}
 			},
 			fail(err) {
+				isLoading = false
 				console.log(err)
+				uni.hideLoading()
 				reject(err)
 			}
 		})
@@ -396,7 +501,7 @@
 			</view>
 		</view>
 		<view class="skill">
-			<p>技能/优势</p>
+			<p>技能/优势*</p>
 			<uni-forms-item>
 				<uni-easyinput @input="haveChange" primaryColor="#fff" type="textarea" v-model="profileData.skillsAdvantages"
 					placeholder="请输入自我介绍" />

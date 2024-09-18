@@ -1,1 +1,76 @@
-"use strict";const e=require("../../common/vendor.js"),c=require("../api/api.js"),d={__name:"schduleIndex",setup(g){const o=e.getCurrentInstance();if(!o)throw new Error("getCurrentInstance must be called within setup or lifecycle hook.");const r=o.appContext.config.globalProperties.$getStaticFilePath;var u=e.ref(),s=e.ref();e.onLoad(t=>{console.log(t.id),c.schedule({department_id:t.id}).then(a=>{console.log(a),u.value=a.interviewRecordListDtos,s.value=u.value.length-1})});var l=e.ref(["0","一面","二面","三面","四面","五面"]);function i(t){const{id:a}=t.currentTarget.dataset;console.log(t.currentTarget.dataset),e.index.navigateTo({url:"/sub-tajiuzhaoni/schduleDetail/schduleDetail?id="+a})}return(t,a)=>e.e({a:e.unref(r)("scheduleBanner.png"),b:e.t(t.departmentName),c:e.unref(r)("pass.png"),d:e.f(e.unref(u),(n,p,h)=>e.e({a:n.result==2},n.result==2?{b:e.unref(r)("pass.png")}:n.result==1?{d:e.unref(r)("unpass.png")}:n.result===null?{f:e.unref(r)("end.png")}:{},{c:n.result==1,e:n.result===null,g:n.result==2},n.result==2?{h:e.unref(r)("solidLine.png")}:{i:e.unref(r)("dotLine.png")},{j:e.t(e.unref(l)[n.round]),k:n.noticeId},n.noticeId?{l:e.o(i,t.round),m:n.noticeId}:{})),e:t.round,f:e.unref(u)[e.unref(s)].result==2},e.unref(u)[e.unref(s)].result==2?{g:e.unref(r)("pass.png")}:{h:e.unref(r)("end.png")},{i:e.unref(u)[e.unref(s)].result==2},e.unref(u)[e.unref(s)].result==2?{j:e.unref(r)("solidLine.png")}:{k:e.unref(r)("dotLine.png")})}},f=e._export_sfc(d,[["__scopeId","data-v-9f0279a5"]]);wx.createPage(f);
+"use strict";
+const common_vendor = require("../../common/vendor.js");
+const subTajiuzhaoni_api_api = require("../api/api.js");
+const _sfc_main = {
+  __name: "schduleIndex",
+  setup(__props) {
+    const instance = common_vendor.getCurrentInstance();
+    if (!instance) {
+      throw new Error("getCurrentInstance must be called within setup or lifecycle hook.");
+    }
+    const getStaticFilePath = instance.appContext.config.globalProperties.$getStaticFilePath;
+    var interviewRecordListDtos = common_vendor.ref();
+    var lastIndex = common_vendor.ref();
+    var departmentName = common_vendor.ref("");
+    common_vendor.onLoad((option) => {
+      console.log(option.id);
+      subTajiuzhaoni_api_api.schedule({ department_id: option.id }).then((res) => {
+        console.log(res.departmentName);
+        departmentName.value = res.departmentName;
+        interviewRecordListDtos.value = res.interviewRecordListDtos;
+        lastIndex.value = interviewRecordListDtos.value.length - 1;
+      });
+    });
+    var interviewRoundCN = common_vendor.ref(["0", "一面", "二面", "三面", "四面", "五面"]);
+    function goToDetail(e) {
+      const { id } = e.currentTarget.dataset;
+      console.log(e.currentTarget.dataset);
+      common_vendor.index.navigateTo({ url: "/sub-tajiuzhaoni/schduleDetail/schduleDetail?id=" + id });
+    }
+    return (_ctx, _cache) => {
+      return common_vendor.e({
+        a: common_vendor.unref(getStaticFilePath)("scheduleBanner.png"),
+        b: common_vendor.t(common_vendor.unref(departmentName)),
+        c: common_vendor.unref(getStaticFilePath)("pass.png"),
+        d: common_vendor.f(common_vendor.unref(interviewRecordListDtos), (item, i, i0) => {
+          return common_vendor.e({
+            a: item.result == 2
+          }, item.result == 2 ? {
+            b: common_vendor.unref(getStaticFilePath)("pass.png")
+          } : item.result == 1 ? {
+            d: common_vendor.unref(getStaticFilePath)("unpass.png")
+          } : {
+            e: common_vendor.unref(getStaticFilePath)("end.png")
+          }, {
+            c: item.result == 1,
+            f: item.result == 2
+          }, item.result == 2 ? {
+            g: common_vendor.unref(getStaticFilePath)("solidLine.png")
+          } : {
+            h: common_vendor.unref(getStaticFilePath)("dotLine.png")
+          }, {
+            i: common_vendor.t(common_vendor.unref(interviewRoundCN)[item.round]),
+            j: item.noticeId
+          }, item.noticeId ? {
+            k: common_vendor.o(goToDetail, _ctx.round),
+            l: item.noticeId
+          } : {});
+        }),
+        e: _ctx.round,
+        f: common_vendor.unref(interviewRecordListDtos)[common_vendor.unref(lastIndex)].result == 2
+      }, common_vendor.unref(interviewRecordListDtos)[common_vendor.unref(lastIndex)].result == 2 ? {
+        g: common_vendor.unref(getStaticFilePath)("pass.png")
+      } : {
+        h: common_vendor.unref(getStaticFilePath)("end.png")
+      }, {
+        i: common_vendor.unref(interviewRecordListDtos)[common_vendor.unref(lastIndex)].result == 2
+      }, common_vendor.unref(interviewRecordListDtos)[common_vendor.unref(lastIndex)].result == 2 ? {
+        j: common_vendor.unref(getStaticFilePath)("solidLine.png")
+      } : {
+        k: common_vendor.unref(getStaticFilePath)("dotLine.png")
+      });
+    };
+  }
+};
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-9f0279a5"]]);
+wx.createPage(MiniProgramPage);
