@@ -6,7 +6,7 @@ function service(options = {}) {
 	let token = uni.getStorageSync('token')
 	options.header = {
 		'content-type': 'application/json',
-		'Authorization': `${token || false}` // 这里是token(可自行修改)
+		'Authorization': `${token || false}` // 这里是token
 	}
 	console.log(options)
 

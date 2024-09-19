@@ -71,21 +71,6 @@
 					data: res.data.grade,
 					key: 'grade'
 				})
-				// uni.getStorageSync({
-				// 	// 看有没有进入过“塔就招你”的海报页
-				// 	key: 'haveEnterTajiuzhaoni',
-				// 	success() {
-				// 		// 进入过
-				// 		console.log('getSuccess')
-				// 	},
-				// 	fail() {
-				// 		// 未进入
-				// 		uni.setStorage({
-				// 			data: true,
-				// 			key: 'haveEnterTajiuzhaoni'
-				// 		})
-				// 	}
-				// })
 				uni.navigateTo({ url: '/pages/index/index' })
 			}
 			// 未绑定 去info页进行信息绑定 记录下openId
@@ -96,12 +81,6 @@
 					key: 'openId',
 				})
 				uni.navigateTo({ url: '/pages/info/info' })
-			} else if (res.code == 405 && !res.data) {
-				uni.showToast({
-					icon: 'none',
-					duration: 3000,
-					title: `${res.msg}`
-				})
 			} else {
 				uni.showToast({
 					icon: 'none',

@@ -44,7 +44,6 @@
 		throw new Error('getCurrentInstance must be called within setup or lifecycle hook.')
 	}
 	const getStaticFilePath = instance.appContext.config.globalProperties.$getStaticFilePath
-	let touchNum = 0
 	let resumeList = ref([])
 	let editingId = ref(null) // 当前正在编辑的 resumeId
 	let nameBeforeEdit = ref(null)
@@ -74,7 +73,6 @@
 	}
 	// 处理编辑完成的事件
 	const handleEdit = resumeId => {
-		console.log('正在处理的简历id：', resumeId)
 		let currentResume = resumeList.value.find(obj => obj.resumeId === resumeId)
 
 		// 如果找到了对应的对象，则获取其 resumeName 属性
@@ -85,8 +83,6 @@
 			} else { //成功改名
 				ChangeResumeName(resumeId, currentResume.resumeName)
 			}
-		} else {
-			console.log('未找到对应的对象')
 		}
 	}
 

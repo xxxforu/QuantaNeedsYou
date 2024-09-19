@@ -14,7 +14,6 @@
 	var profileListEmpty = ref(null)
 	var departmentEmpty = ref(false)
 	var deliveryEmpty = ref(true)
-	var newResumeName = ref()
 
 	function messageToggle(type, text) {
 		msgType.value = type
@@ -27,7 +26,6 @@
 	function getDepartment(isRefresh, hasSubmitted) {
 		isNotDeliver.value = !hasSubmitted
 		department({ hasSubmitted: hasSubmitted }).then(res => {
-			console.log(res)
 			// 未投递的列表
 			if (!hasSubmitted && res.length === 0) {
 				departmentEmpty.value = true
@@ -42,8 +40,6 @@
 			if (error.data.code == 402) { //投递已结束
 				departmentEmpty.value = true
 			}
-
-			console.log(error)
 		})
 	}
 
@@ -65,7 +61,6 @@
 		//.box获取class为box的元素，如果使用的id= 'box' 则使用'#box'
 		var tabBarHeight = ref(0)
 		uni.createSelectorQuery().select('.tabBar').boundingClientRect(data => {
-			console.log(data)
 			tabBarHeight.value = data.height
 		}).exec()
 	})
@@ -77,7 +72,6 @@
 	function getProfileList() {
 		getResumeList().then(res => {
 			profileList.value = res
-			console.log(profileList.value)
 		})
 	}
 
@@ -91,7 +85,6 @@
 			profileListEmpty.value.open('center')
 		}
 	}
-	var newProfileName = ref('名字')
 	var inputDialog = ref(null)
 
 	function newProfileDecideName() {
@@ -141,7 +134,6 @@
 		</view>
 		<view class="content">
 			<view v-show="isNotDeliver" class="tabcontent notDeliver">
-				<!-- 因为后端给的是投递已结束 所以暂时反过来 -->
 				<text v-if="departmentEmpty" class="empty">本年投递已结束~明年再来吧~</text>
 				<view v-if="!departmentEmpty" class="departmentList" style="padding-top: 20px;">
 					<view v-for="item in departmentList" :key="item.departmentId">

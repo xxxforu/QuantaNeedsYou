@@ -10,7 +10,6 @@
 	var lastIndex = ref()
 	var departmentName = ref('')
 	onLoad(option => {
-		console.log(option.id)
 		schedule({ department_id: option.id }).then(res => {
 			// 拿到res后要给到interviewRecordListDtos
 			console.log(res.departmentName)
@@ -23,7 +22,6 @@
 
 	function goToDetail(e) {
 		const { id } = e.currentTarget.dataset
-		console.log(e.currentTarget.dataset)
 		uni.navigateTo({ url: '/sub-tajiuzhaoni/schduleDetail/schduleDetail?id=' + id })
 	}
 </script>

@@ -27,12 +27,10 @@
 			url: data.value.annex, //文件的下载路径
 			// filePath: wx.env.USER_DATA_PATH + '/file.' + fileExtension, // 指定文件的下载路径和名字、后缀名，防止unknown
 			success(res) {
-				console.log('downLoadFileRES------->', res)
 				//保存到本地
 				uni.saveFile({
 					tempFilePath: res.tempFilePath, //文件的保存路径
 					success: function(res) {
-						console.log('saveFileRES------------------>', res)
 						const savedFilePath = res.savedFilePath
 						// 打开文件
 						uni.openDocument({
